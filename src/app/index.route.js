@@ -1,10 +1,10 @@
 export default function routerConfig ($stateProvider, $urlRouterProvider) {
   'ngInject';
   $stateProvider
-    .state('login', {
-      url: '/login',
-      component: 'loginComponent'
+    .state('home', {
+      url: '/home',
+      component: 'homeComponent'
     });
 
-  $urlRouterProvider.otherwise('login');
+  $urlRouterProvider.otherwise('home');
 }

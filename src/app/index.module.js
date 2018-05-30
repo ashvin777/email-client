@@ -1,9 +1,10 @@
-/* global moment:false, gapi */
+/* global moment:false */
 
 import config from './index.config';
 import routerConfig from './index.route';
 import runBlock from './index.run';
 import './components/';
+
 
 angular.module('app', [
     'ngSanitize',
@@ -14,3 +15,7 @@ angular.module('app', [
   .config(config)
   .config(routerConfig)
   .run(runBlock);
+
+angular.element(document).ready(function () {
+  angular.bootstrap(angular.element(document.body), ['app']);
+});

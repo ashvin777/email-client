@@ -1,5 +1,5 @@
-import LoginComponent from './login/login.component';
+import HomeComponent from './home/home.component';
 
 angular.module('app.components', [])
-  .component('loginComponent', LoginComponent)
+  .component('homeComponent', HomeComponent)
   ;

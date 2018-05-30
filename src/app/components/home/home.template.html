@@ -1,0 +1,84 @@
+<div class="page page-home">
+
+  <header>
+
+    <div class="left">
+      <div class="avatar-image">
+        <img src="assets/images/avatar.png">
+      </div>
+      <div class="avatar-name">John Morrison</div>
+    </div>
+
+    <div class="right">
+      <div class="icon">
+        <i class="far fa-bell"></i>
+      </div>
+
+      <div class="icon" ng-click="$ctrl.login()">
+        <i class="fab fa-google"></i>
+      </div>
+
+    </div>
+
+  </header>
+
+  <div class="body">
+
+    <div class="labels-panel">
+      <header>
+        Messages
+      </header>
+      <ul>
+        <li class="active">
+          <i class="fas fa-inbox"></i>
+          Inbox
+        </li>
+        <li>
+          <i class="far fa-clone"></i>
+          Draft
+        </li>
+        <li>
+          <i class="far fa-share-square"></i>
+          Sent
+        </li>
+        <li>
+          <i class="fab fa-creative-commons-sampling"></i>
+          Spam
+        </li>
+        <li>
+          <i class="far fa-trash-alt"></i>
+          Deleted
+        </li>
+        <li>
+          <i class="far fa-star"></i>
+          Other
+        </li>
+      </ul>
+    </div>
+
+    <div class="emails-panel">
+      <ul>
+        <li ng-repeat="email in $ctrl.emails" ng-class="{active: $index === 0}">
+          <div class="left">
+            <div class="avatar">
+
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="sender" ng-repeat="header in email.result.payload.headers" ng-if="header.name.toLowerCase() === 'from'">{{header.value}}</div>
+            <div class="title" ng-repeat="header in email.result.payload.headers" ng-if="header.name.toLowerCase() === 'subject'">{{header.value}}</div>
+            <div class="description">
+              {{email.result.snippet}}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="email-details-panel">
+
+    </div>
+
+  </div>
+</div>
