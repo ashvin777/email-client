@@ -1,18 +1,18 @@
-.page-home{
+.page-home.eapp{
 
-  > header{
+  > header.eapp{
     border-bottom: 1px solid $gray-lighter;
     overflow: auto;
     height: $header-height;
     padding-left: 20px;
 
-    .left{
+    .left.eapp{
       float: left;
       color: $blue-dark;
       font-weight: 500;
       line-height: $header-height;
 
-      .avatar-image{
+      .avatar-image.eapp{
         vertical-align: middle;
         display: inline-block;
         height: 35px;
@@ -23,7 +23,7 @@
         }
       }
 
-      .avatar-name{
+      .avatar-name.eapp{
         display: inline-block;
         padding: 0 15px;
         vertical-align: middle;
@@ -32,7 +32,7 @@
       }
     }
 
-    .right{
+    .right.eapp{
       float: right;
       height: $header-height;
 
@@ -40,7 +40,7 @@
         font-size: 16px;
       }
 
-      .icon{
+      .icon.eapp{
         float: left;
         height: 100%;
         color: $gray-light;
@@ -51,21 +51,25 @@
 
   }
 
-  .body{
+  .body.eapp{
     display: flex;
     height: calc( 100% - #{$header-height});
 
-    .labels-panel{
-      width: 300px;
+    .labels-panel.eapp{
+      min-width: 200px;
       border-right: 1px solid $gray-light;
 
       header{
         padding: 20px;
         font-size: 16px;
         font-weight: 500;
+        border-bottom: 1px solid $gray-lighter;
       }
 
       ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
 
         li{
           padding: 15px 0px;
@@ -79,7 +83,7 @@
           &.active{
             background: $blue-lightest;
             color: $blue;
-            font-weight: 600;
+            font-weight: 500;
             border-right: 3px solid $blue;
           }
 
@@ -91,40 +95,51 @@
       }
     }
 
-    .emails-panel{
-      width: 450px;
+    .emails-panel.eapp{
+      min-width: 380px;
+      max-width: 380px;
       height: 100%;
       border-right: 1px solid $gray-light;
       overflow: auto;
+      background: $blue-lightest;
 
       ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
 
         li{
           display: flex;
           left: 60px;
           border-bottom: 1px solid $gray-lighter;
-          padding: 20px;
+          padding: 10px;
+          margin: 10px;
+          background: white;
+          border-radius: 3px;
+          box-shadow: 0 0 10px $gray-lighter;
 
           .avatar{
-            height: 40px;
-            width: 40px;
-            border-radius: 20px;
+            height: 30px;
+            width: 30px;
+            border-radius: 15px;
             background: $gray-light;
           }
 
           .right{
-            padding: 0px 20px;
+            padding-left: 10px;
 
             .sender{
               font-weight: lighter;
               font-size: 12px;
               padding-bottom: 8px;
+              color: $gray;
             }
 
             .title{
-              font-weight: 600;
-              padding-bottom: 15px;
-              font-size: 16px;
+              font-weight: 500;
+              padding-bottom: 10px;
+              max-height: 34px;
+              overflow: hidden;
             }
 
             .description {
@@ -132,32 +147,68 @@
               max-height: 42px;
               overflow: hidden;
               line-height: 20px;
+              font-size: 12px;
+              color: $gray;
             }
           }
 
           &.active{
-            border-right: 3px solid $blue;
-            background: $blue-lightest;
+            background: $blue;
 
             .avatar{
-              background: $blue;
+              background: white;
             }
 
             .title{
-              color: $blue;
+              color: white;
+            }
+
+            .description, .sender{
+              color: $gray-light;
             }
           }
 
           &:hover{
-            background: $blue-lightest;
+            box-shadow: 0 0 10px $gray-light;
             cursor: pointer;
           }
         }
       }
     }
 
-    .email-details-panel{
+    .email-details-panel.eapp{
+      flex: 1;
+      overflow: auto;
+      background: $blue-lightest;
 
+
+      header.eapp{
+        padding: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        border-bottom: 1px solid $gray-lighter;
+        background: white;
+        position: sticky;
+        top: 0;
+      }
+
+      .email-details-body.eapp{
+        margin: 10px;
+        padding: 20px;
+        background: white;
+        box-shadow: 0 0 10px $gray-lighter;
+        border-radius: 3px;
+
+        ul.eapp {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li.eapp{
+
+          }
+        }
+      }
     }
   }
 }

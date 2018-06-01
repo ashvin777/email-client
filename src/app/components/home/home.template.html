@@ -1,20 +1,20 @@
-<div class="page page-home">
+<div class="page page-home eapp">
 
-  <header>
+  <header class="eapp">
 
-    <div class="left">
-      <div class="avatar-image">
+    <div class="left eapp">
+      <div class="avatar-image eapp">
         <img src="assets/images/avatar.png">
       </div>
-      <div class="avatar-name">John Morrison</div>
+      <div class="avatar-name eapp">John Morrison</div>
     </div>
 
-    <div class="right">
-      <div class="icon">
+    <div class="right eapp">
+      <div class="icon eapp">
         <i class="far fa-bell"></i>
       </div>
 
-      <div class="icon" ng-click="$ctrl.login()">
+      <div class="icon eapp" ng-click="$ctrl.login()">
         <i class="fab fa-google"></i>
       </div>
 
@@ -22,43 +22,23 @@
 
   </header>
 
-  <div class="body">
+  <div class="body eapp">
 
-    <div class="labels-panel">
+    <div class="labels-panel eapp">
       <header>
         Messages
       </header>
       <ul>
-        <li class="active">
+        <li ng-repeat="label in $ctrl.labels" ng-class="{ active :  $ctrl.selectedLabel === label }" ng-click="$ctrl.selectLabel(label)">
           <i class="fas fa-inbox"></i>
-          Inbox
-        </li>
-        <li>
-          <i class="far fa-clone"></i>
-          Draft
-        </li>
-        <li>
-          <i class="far fa-share-square"></i>
-          Sent
-        </li>
-        <li>
-          <i class="fab fa-creative-commons-sampling"></i>
-          Spam
-        </li>
-        <li>
-          <i class="far fa-trash-alt"></i>
-          Deleted
-        </li>
-        <li>
-          <i class="far fa-star"></i>
-          Other
+          {{label}}
         </li>
       </ul>
     </div>
 
-    <div class="emails-panel">
+    <div class="emails-panel eapp">
       <ul>
-        <li ng-repeat="email in $ctrl.emails" ng-class="{active: $index === 0}">
+        <li ng-repeat="email in $ctrl.emails" ng-class="{active: $ctrl.selectedEmail.result.id === email.result.id }" ng-click="$ctrl.selectEmail(email)">
           <div class="left">
             <div class="avatar">
 
@@ -66,8 +46,14 @@
           </div>
 
           <div class="right">
-            <div class="sender" ng-repeat="header in email.result.payload.headers" ng-if="header.name.toLowerCase() === 'from'">{{header.value}}</div>
-            <div class="title" ng-repeat="header in email.result.payload.headers" ng-if="header.name.toLowerCase() === 'subject'">{{header.value}}</div>
+            <div class="sender">
+              {{email.details.from}}
+            </div>
+
+            <div class="title" >
+              {{email.details.subject}}
+            </div>
+
             <div class="description">
               {{email.result.snippet}}
             </div>
@@ -76,7 +62,18 @@
       </ul>
     </div>
 
-    <div class="email-details-panel">
+    <div class="email-details-panel eapp">
+      <header class="eapp">
+        {{$ctrl.selectedEmail.details.subject}}
+      </header>
+
+      <div class="email-details-body eapp" id="email-details">
+        <!-- <ul class="eapp">
+          <li class="eapp" ng-bind-html="$ctrl.selectedEmail.result.payload.body.data"></li>
+          <li class="eapp" ng-repeat="part in $ctrl.selectedEmail.result.payload.parts" ng-bind-html="part.body.data">
+          </li>
+        </ul> -->
+      </div>
 
     </div>
 
