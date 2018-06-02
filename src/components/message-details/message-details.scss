@@ -2,5 +2,24 @@
 @import "../../consts";
 
 .message-details{
+  flex: 1;
   overflow: auto;
+
+  header{
+    border-bottom: 1px solid $gray-light;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 15px;
+    font-weight: bold;
+    padding: 15px;
+    background: white;
+  }
+
+  .message{
+    // height: 100%;
+    // height: calc( 100% - 73px );
+    // overflow: auto;
+  }
+
 }

@@ -6,9 +6,9 @@
 
   <div class="login" @click="login()">Login</div>
   <div class="body">
-    <labels-component :selected-label="selectedLabel"></labels-component>
-    <messages-component></messages-component>
-    <message-details-component></message-details-component>
+    <labels-component :selected-label="selectedLabel" @update="selectedLabel = $event"></labels-component>
+    <messages-component :label="selectedLabel" :selected-message="selectedMessage" @update="selectedMessage = $event"></messages-component>
+    <message-details-component :selected-message="selectedMessage"></message-details-component>
   </div>
 </div>
 

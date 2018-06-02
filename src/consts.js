@@ -7,21 +7,38 @@ export const GOOGLE_API = {
 
 export const LABELS = {
   INBOX: {
-    label: 'Inbox'
+    label: 'Inbox',
+    key: 'INBOX',
+    icon: ''
   },
   DRAFT: {
-    label: 'Draft'
+    label: 'Draft',
+    key: 'DRAFT',
+    icon: ''
   },
   SENT: {
-    label: 'Sent'
+    label: 'Sent',
+    key: 'SENT',
+    icon: ''
+  },
+  UNREAD: {
+    label: 'Unread',
+    key: 'UNREAD',
+    icon: ''
   },
   SPAM: {
-    label: 'Spam'
+    label: 'Spam',
+    key: 'SPAM',
+    icon: ''
   },
   DELETED: {
-    label: 'Deleted'
+    label: 'Deleted',
+    key: 'DELETED',
+    icon: ''
   },
   IMPORTANT: {
-    label: 'Important'
+    label: 'Important',
+    key: 'IMPORTANT',
+    icon: ''
   }
 };

@@ -1,7 +1,11 @@
 import GoogleApi from '../../services/google';
-import { setTimeout } from 'timers';
+import {
+  setTimeout
+} from 'timers';
 
 export default {
+
+  props: ['selectedMessage'],
 
   data() {
     return {
@@ -9,21 +13,16 @@ export default {
     };
   },
 
-  async mounted() {
-
-     setTimeout(async () => {
-    // debugger;
-      let shadowDOM = this.$el.querySelector('#message').attachShadow({ mode: 'open' });
-
-      let id = '163c0429ed37a834';
-      this.messageDetails = await GoogleApi.getMessageDetails(id);
-      console.log(this.messageDetails.result.payload.parts[1]);
-
-      shadowDOM.innerHTML = this.messageDetails.result.payload.parts[1];
-     }, 2000);
+  watch: {
+    async selectedMessage(message) {
+      this.messageDetails = await GoogleApi.getMessageDetails(message.result.id);
+      this.messageDOM.innerHTML = this.messageDetails.result.payload.parts[1];
+    }
   },
 
-  methods: {
-
+  async mounted() {
+    this.messageDOM = this.$refs.message.attachShadow({
+      mode: 'open'
+    });
   }
 }

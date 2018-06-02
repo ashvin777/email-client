@@ -3,10 +3,10 @@
 
 <template>
   <div class="message-details">
-    <header>
-      <!-- {{messageDetails.details.from}} -->
+    <header v-if="messageDetails.details">
+      {{messageDetails.details.subject}}
     </header>
 
-    <div id="message"></div>
+    <div ref="message" class="message"></div>
   </div>
 </template>

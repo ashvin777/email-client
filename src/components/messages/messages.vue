@@ -3,13 +3,19 @@
 
 <template>
   <div class="messages">
+
+    <header>
+
+    </header>
     <ul>
       <li
         v-for="(message, index) in messages"
         :key="index"
-        :class="{active: selected.result.id === message.result.id }"
+        :class="{
+          active: selectedMessage.result.id === message.result.id,
+          unread: isUnread(message.result.labelIds)
+        }"
         @click="select(message)">
-
         <div class="left">
           <div class="avatar"></div>
         </div>

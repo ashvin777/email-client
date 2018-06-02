@@ -14,12 +14,11 @@ export default {
 
   data() {
     return {
-      selectedLabel: LABELS.INBOX
+      selectedLabel: LABELS.INBOX,
+      selectedMessage: {
+        result: {}
+      }
     }
-  },
-
-  async mounted () {
-
   },
 
   methods: {

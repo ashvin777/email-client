@@ -30,7 +30,11 @@ export default {
   getMessages(label) {
     return new Promise(async resolve => {
       let response = [];
-      await this.isGoogleLoaded();
+
+      if (typeof gapi === 'undefined') {
+        await this.isGoogleLoaded();
+      }
+
       let emails = await gapi.client.gmail.users.messages.list({
         'userId': 'me',
         'labelIds': [label],
@@ -57,7 +61,9 @@ export default {
   getMessageDetails(id) {
     return new Promise(async resolve => {
 
-      await this.isGoogleLoaded();
+      if (typeof gapi === 'undefined') {
+        await this.isGoogleLoaded();
+      }
 
       let emailDetail = await gapi.client.gmail.users.messages.get({
         'userId': 'me',

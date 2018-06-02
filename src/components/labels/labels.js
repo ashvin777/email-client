@@ -9,19 +9,13 @@ export default {
 
   data() {
     return {
-      selected: ''
+      labels: LABELS
     };
-  },
-
-  watch: {
-    selectedLabel(label) {
-      this.selected = label;
-    }
   },
 
   methods: {
     select(label) {
-      this.selected = label;
+      this.$emit('update', label);
     }
   }
 }

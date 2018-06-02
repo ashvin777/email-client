@@ -10,7 +10,7 @@
       <li
         v-for="(label, index) in labels"
         :key="index"
-        :class="{ active :  selected === label }"
+        :class="{ active :  selectedLabel.label === label.label }"
         @click="select(label)">
         {{label.label}}
       </li>
