@@ -1,0 +1,132 @@
+@import "../../consts";
+
+.login{
+  position: absolute;
+  right: 0;
+}
+
+.page-home{
+  height: 100%;
+
+  .body{
+    display: flex;
+    height: 100%;
+    background: white;
+
+    .emails-panel{
+      min-width: 380px;
+      max-width: 380px;
+      height: 100%;
+      border-right: 1px solid $gray-light;
+      overflow: auto;
+      background: $blue-lightest;
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li{
+          display: flex;
+          left: 60px;
+          border-bottom: 1px solid $gray-lighter;
+          padding: 10px;
+          margin: 10px;
+          background: white;
+          border-radius: 3px;
+          box-shadow: 0 0 10px $gray-lighter;
+
+          .avatar{
+            height: 30px;
+            width: 30px;
+            border-radius: 15px;
+            background: $gray-light;
+          }
+
+          .right{
+            padding-left: 10px;
+
+            .sender{
+              font-weight: lighter;
+              font-size: 12px;
+              padding-bottom: 8px;
+              color: $gray;
+            }
+
+            .title{
+              font-weight: 500;
+              padding-bottom: 10px;
+              max-height: 34px;
+              overflow: hidden;
+            }
+
+            .description {
+              font-weight: lighter;
+              max-height: 42px;
+              overflow: hidden;
+              line-height: 20px;
+              font-size: 12px;
+              color: $gray;
+            }
+          }
+
+          &.active{
+            background: $blue;
+
+            .avatar{
+              background: white;
+            }
+
+            .title{
+              color: white;
+            }
+
+            .description, .sender{
+              color: $gray-light;
+            }
+          }
+
+          &:hover{
+            box-shadow: 0 0 10px $gray-light;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .email-details-panel{
+      flex: 1;
+      overflow: auto;
+      background: $blue-lightest;
+
+
+      header{
+        padding: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        border-bottom: 1px solid $gray-lighter;
+        background: white;
+        position: sticky;
+        top: 0;
+      }
+
+      .email-details-body{
+        margin: 10px;
+        padding: 20px;
+        background: white;
+        box-shadow: 0 0 10px $gray-lighter;
+        border-radius: 3px;
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li{
+
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+
+@import "../../consts";
+
+.messages{
+  min-width: 380px;
+  max-width: 380px;
+  height: 100%;
+  border-right: 1px solid $gray-light;
+  overflow: auto;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li{
+      display: flex;
+      left: 60px;
+      border-bottom: 1px solid $gray-lighter;
+      padding: 10px;
+      margin: 10px;
+      background: white;
+      cursor: pointer;
+      border-radius: 3px;
+      box-shadow: 0 0 10px $gray-lighter;
+
+      .avatar{
+        height: 10px;
+        width: 10px;
+        border-radius: 15px;
+        background: $dark;
+        // color: white;
+        font-weight: bold;
+        text-align: center;
+        position: relative;
+        margin-top: 5px;
+      }
+
+      .right{
+        padding-left: 10px;
+
+        .sender{
+          font-weight: lighter;
+          font-size: 12px;
+          // padding-bottom: 8px;
+          color: $gray;
+        }
+
+        .title{
+          font-weight: 500;
+          // padding-bottom: 10px;
+          // max-height: 34px;
+          overflow: hidden;
+        }
+
+        .description {
+          font-weight: lighter;
+          max-height: 42px;
+          overflow: hidden;
+          line-height: 20px;
+          font-size: 12px;
+          color: $gray;
+        }
+      }
+
+      &.active{
+        background: $blue;
+
+        .avatar{
+          background: white;
+        }
+
+        .title{
+          color: white;
+        }
+
+        .description, .sender{
+          color: $gray-light;
+        }
+      }
+
+      &:hover{
+        // box-shadow: 0 0 10px $gray-light;
+        // cursor: pointer;
+      }
+    }
+  }
+}

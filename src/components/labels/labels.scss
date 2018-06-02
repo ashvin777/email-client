@@ -1,0 +1,36 @@
+@import "../../consts";
+
+.labels{
+  min-width: 150px;
+  background-color: $dark;
+  color: white;
+  padding-top: 20px;
+
+  header{
+    padding: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid darken($color: $dark, $amount: 15%);
+    -webkit-app-region: drag;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li{
+      padding: 5px 15px;
+      font-weight: lighter;
+      cursor: pointer;
+
+      &:hover{
+        background: lighten($color: $dark, $amount: 10%);
+      }
+
+      &.active{
+        background: darken($color: $dark, $amount: 10%);
+        font-weight: bold;
+      }
+    }
+  }
+}
