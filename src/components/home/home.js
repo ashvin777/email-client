@@ -23,7 +23,7 @@ export default {
 
   methods: {
     login() {
-      GoogleApi.init();
+      GoogleApi.login();
     }
   }
 }

@@ -6,7 +6,7 @@ import {
 let interval = null;
 
 export default {
-  init() {
+  async init() {
     gapi.load('client:auth2', () => {
       gapi.client.init({
         discoveryDocs: GOOGLE_API.DISCOVERY_DOCS,
@@ -16,10 +16,14 @@ export default {
     });
   },
 
+  async login() {
+    await gapi.auth2.getAuthInstance().signIn();
+  },
+
   isGoogleLoaded() {
     return new Promise(resolve => {
       interval = setInterval(() => {
-        if (typeof gapi !== 'undefined') {
+        if (typeof gapi !== 'undefined' && gapi.client.gmail) {
           clearInterval(interval);
           resolve();
         }
