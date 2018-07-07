@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueMoment from 'vue-moment';
+
 import App from './app.vue';
 
 import routes from './index.routes';
 
 Vue.use(VueRouter);
-Vue.use(require('vue-moment'));
+Vue.use(VueMoment);
 
 Vue.config.productionTip = false;
 
