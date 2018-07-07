@@ -5,8 +5,10 @@
   <div class="messages">
 
     <header>
-
+      <div class="title">Messages</div>
+      <input type="search">
     </header>
+
     <ul>
       <li
         v-for="(message, index) in messages"

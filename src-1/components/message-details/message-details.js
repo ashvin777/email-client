@@ -1,7 +1,4 @@
 import GoogleApi from '../../services/google';
-import {
-  setTimeout
-} from 'timers';
 
 export default {
 

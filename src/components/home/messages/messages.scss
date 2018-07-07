@@ -1,0 +1,90 @@
+@import '../../../styles/consts';
+
+.messages-container{
+  padding: 20px;
+  padding-top: 30px;
+  padding-bottom: 0;
+  width: 500px;
+
+  header{
+    font-size: $largest-font;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 2px solid $gray-lightest;
+  }
+
+  .body{
+    margin-top: 20px;
+    padding-right: 20px;
+    overflow: auto;
+    height: calc( 100% - 70px);
+
+    ul{
+      li{
+        display: flex;
+        padding: 10px 20px;
+        border-radius: 5px;
+        padding-left: 30px;
+        cursor: pointer;
+        transition: background 100ms;
+        position: relative;
+
+        .from{
+          min-width: 30%;
+          width: 30%;
+          font-weight: $medium-weight;
+        }
+
+        .subject{
+          flex: 1;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          color: $gray;
+        }
+
+        .timestamp{
+          min-width: 20%;
+          width: 20%;
+          text-align: right;
+        }
+
+        &:hover{
+          background: $blue-lightest;
+
+          &.unread:before{
+            transform: scale(1.5);
+          }
+        }
+
+        &:active{
+          background: $blue-lighter;
+        }
+
+        &.active{
+          background: $blue;
+          color: white;
+
+          .subject{
+            color: white;
+          }
+        }
+
+        &.unread{
+          &:before{
+            position: absolute;
+            content: '';
+            height: 8px;
+            width: 8px;
+            background: $blue;
+            border-radius: 2px;
+            left: 10px;
+            top: 15px;
+            transition: all 300ms;
+          }
+        }
+      }
+    }
+  }
+
+}

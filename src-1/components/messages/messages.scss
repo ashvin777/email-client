@@ -2,8 +2,8 @@
 @import "../../consts";
 
 .messages{
-  min-width: 380px;
-  max-width: 380px;
+  min-width: 320px;
+  max-width: 320px;
   height: 100%;
 
   header{
@@ -27,20 +27,22 @@
     li{
       display: flex;
       left: 60px;
-      border-bottom: 1px solid $gray-lighter;
+      // border-bottom: 1px solid $gray-lighter;
       padding: 10px;
-      margin: 10px;
+      margin: 0px;
       background: white;
       cursor: pointer;
-      border-radius: 3px;
-      box-shadow: 0 0 10px $gray-lighter;
+
+      &:nth-child(even){
+        background: $blue-lightest;
+      }
 
       .avatar{
         visibility: hidden;
         height: 10px;
         width: 10px;
         border-radius: 15px;
-        background: $dark;
+        background: $green-light;
         font-weight: bold;
         text-align: center;
         position: relative;
@@ -58,6 +60,7 @@
 
         .title{
           overflow: hidden;
+          font-weight: 400;
         }
 
         .description {
@@ -66,8 +69,12 @@
         }
       }
 
+      &:hover{
+        background: $blue-lightest;
+      }
+
       &.active{
-        background: $blue;
+        background: $green-light;
 
         .avatar{
           background: white;
@@ -89,13 +96,9 @@
 
         .right{
           .title{
-            font-weight: 700;
+            font-weight: 500;
           }
         }
-      }
-
-      &:hover{
-        box-shadow: 0 0 20px $gray;
       }
     }
   }

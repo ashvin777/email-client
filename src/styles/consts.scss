@@ -1,0 +1,35 @@
+//font-size
+$light-font: 0.857rem; //12px
+$regular-font: 1rem; //14px;
+$medium-font: 1.286rem; //18px
+$large-font: 1.25rem; //20px
+$larger-font: 1.571rem; //22px
+$largest-font: 2rem; //28px
+
+//weight
+$light-weight: 300;
+$regular-weight: 400;
+$medium-weight: 500;
+$condensed-weight: 900;
+
+//px
+$padding-default: 15px;
+
+//colors
+$dark: #18242f;
+$dark-light: lighten($dark, 5%);
+$dark-darken: darken($dark, 5%);
+
+$green: green;
+$green-light:lighten($green, 10%);
+
+$red: #ff401a;
+$blue: #2973ff;
+$blue-lighter: lighten($blue, 35%);
+$blue-lightest: lighten($blue, 40%);
+$amber: #ffbf00;
+
+$gray: gray;
+$gray-light: lighten($gray, 20%);
+$gray-lighter: lighten($gray, 30%);
+$gray-lightest: lighten($gray, 45%);

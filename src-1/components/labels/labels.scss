@@ -2,15 +2,22 @@
 
 .labels{
   min-width: 150px;
-  background-color: $dark;
+  background-color: $blue-dark;
   color: white;
   padding-top: 20px;
 
   header{
     padding: 15px;
+    padding-top: 20px;
     font-weight: bold;
     border-bottom: 1px solid darken($color: $dark, $amount: 15%);
     -webkit-app-region: drag;
+
+    button{
+      background: $blue;
+      color: white;
+      width: 100%;
+    }
   }
 
   ul {
@@ -28,8 +35,9 @@
       }
 
       &.active{
-        background: darken($color: $dark, $amount: 10%);
+        background: white;//darken($color: $dark, $amount: 10%);
         font-weight: bold;
+        color: $dark;
       }
     }
   }

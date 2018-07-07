@@ -1,0 +1,12 @@
+{
+  "web": {
+    "client_id": "986595699089-lk6p6gmlk1u2s8ofl13sa49f7of3n0v5.apps.googleusercontent.com",
+    "project_id": "app-reviews-1470423222774",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "a92xRr-DhXjrAQT_9QECnZSj",
+    "redirect_uris": ["http://localhost:8100/oauth2callback"],
+    "javascript_origins": ["http://localhost:8100"]
+  }
+}

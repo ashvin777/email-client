@@ -4,7 +4,7 @@
 <template>
   <div class="labels">
     <header>
-      Messages
+      <button>Compose</button>
     </header>
     <ul>
       <li

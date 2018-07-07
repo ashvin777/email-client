@@ -4,16 +4,21 @@
   "private": true,
   "main": "main.js",
   "scripts": {
-    "dev": "NODE_ENV=DEV vue-cli-service --port 64636 serve & sleep 5 && NODE_ENV=DEV electron .",
+    "dev": "NODE_ENV=DEV vue-cli-service --port 3000 serve & sleep 5 && NODE_ENV=DEV electron .",
+    "dist": "electron .",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build;node dist.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "electron-google-oauth": "^2.0.0",
+    "google-auth-library": "^1.6.1",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.2",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue-moment": "^4.0.0",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",

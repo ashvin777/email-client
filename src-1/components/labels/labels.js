@@ -18,4 +18,4 @@ export default {
       this.$emit('update', label);
     }
   }
-}
+};
