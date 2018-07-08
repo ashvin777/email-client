@@ -14,9 +14,9 @@ export default {
   },
 
   mounted() {
-    this.select(LABELS[0]);
     labelsApi.get(LABEL_IDS.INBOX).then(res => {
-      this.labels[0].unread = res.messagesUnread;
+      this.select(LABELS[0]);
+      this.labels[0].unread = res.data.messagesUnread;
     });
   },
 

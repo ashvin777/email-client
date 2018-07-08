@@ -1,0 +1,45 @@
+@import './consts';
+
+input {
+  display: inline-block;
+  margin: 0;
+  padding: 0 15px;
+  outline: 0;
+  border: 0;
+  line-height: 34px;
+  font-size: 14px;
+  border: 1px solid $blue-lighter;
+  border-radius: 5px;
+
+  &:focus {
+    outline: 0!important;
+    box-shadow: 0 0 5px $gray-lighter;
+  }
+
+  &::placeholder {
+    color: $gray-lighter;
+  }
+}
+
+
+.search{
+  width: 300px;
+  display: flex;
+  border: 1px solid $gray-lighter;
+  border-radius: 5px;
+
+  i{
+    font-size: 16px;
+    padding: 9px 10px;
+    color: $gray-lighter;
+  }
+
+  input{
+    border: 0;
+    padding-left: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}

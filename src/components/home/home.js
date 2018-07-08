@@ -11,7 +11,8 @@ export default {
   data() {
     return {
       profile: {},
-      label: {}
+      label: {},
+      thread: null
     };
   },
 
@@ -24,10 +25,10 @@ export default {
   mounted() {
 
     profileApi.get().then(res => {
-      profileApi.getMoreDetails(res.emailAddress).then(more => {
-        let profile = res;
-        profile.photo = more.entry.gphoto$thumbnail.$t;
-        profile.name = more.entry.gphoto$nickname.$t;
+      profileApi.getMoreDetails(res.data.emailAddress).then(more => {
+        let profile = res.data;
+        profile.photo = more.data.entry.gphoto$thumbnail.$t;
+        profile.name = more.data.entry.gphoto$nickname.$t;
         this.profile = profile;
         profileStorage.set(profile);
       });
@@ -36,7 +37,12 @@ export default {
 
   methods: {
     onSelectLabel(label) {
+      this.thread = {};
       this.label = label;
+    },
+
+    onSelectThread(thread) {
+      this.thread = thread;
     }
   }
 };

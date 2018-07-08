@@ -22,3 +22,39 @@ export const GOOGLE_AUTH_URL =
 export const EVENTS = {
   UNAUTHORIZED: 'unauthorized'
 };
+
+export const MESSAGE_MIMES = {
+  TEXT: {
+    PLAIN: 'text/plain',
+    TEXT_HTML: 'text/html'
+  },
+  MULTIPART: {
+    ALTERNATIVE: 'multipart/alternative',
+    MIXED: 'multipart/mixed'
+  }
+};
+
+export const CATEGORY_IDS = {
+  PRIMARY: 'primary',
+  FORUMS: 'CATEGORY_FORUMS',
+  PROMOTIONS: 'CATEGORY_PROMOTIONS',
+  SOCIAL: 'CATEGORY_SOCIAL',
+  UPDATES: 'CATEGORY_UPDATES'
+};
+
+export const CATEGORIES = [{
+  name: 'Primary',
+  id: CATEGORY_IDS.PRIMARY
+},{
+  name: 'Updates',
+  id: CATEGORY_IDS.UPDATES
+},{
+  name: 'Promotions',
+  id: CATEGORY_IDS.PROMOTIONS
+},{
+  name: 'Social',
+  id: CATEGORY_IDS.SOCIAL
+},{
+  name: 'Forums',
+  id: CATEGORY_IDS.FORUMS
+}];

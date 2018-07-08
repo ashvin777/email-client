@@ -5,69 +5,55 @@ export const LABEL_IDS = {
 export const LABELS = [{
   "id": "INBOX",
   "name": "Inbox",
+  "icon": "inbox",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelShow",
   "type": "system"
 }, {
   "id": "SENT",
   "name": "Sent",
+  "icon": "send",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelShow",
   "type": "system"
 }, {
   "id": "IMPORTANT",
   "name": "Important",
+  "icon": "award",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelShow",
   "type": "system"
 }, {
   "id": "TRASH",
   "name": "Trash",
+  "icon": "trash-2",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelShow",
   "type": "system"
 }, {
   "id": "DRAFT",
   "name": "Draft",
+  "icon": "edit-2",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelShow",
   "type": "system"
 }, {
   "id": "STARRED",
   "name": "Starred",
+  "icon": "star",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelShow",
   "type": "system"
 }, {
   "id": "UNREAD",
+  "icon": "book",
   "name": "Unread",
   "type": "system"
-},{
+}, {
   "id": "SPAM",
   "name": "Spam",
+  "icon": "alert-circle",
   "messageListVisibility": "hide",
   "labelListVisibility": "labelHide",
   "type": "system"
-},
-//   {
-//   "id": "CATEGORY_FORUMS",
-//   "name": "CATEGORY_FORUMS",
-//   "type": "system"
-// }, {
-//   "id": "CATEGORY_PERSONAL",
-//   "name": "CATEGORY_PERSONAL",
-//   "type": "system"
-// }, {
-//   "id": "CATEGORY_PROMOTIONS",
-//   "name": "CATEGORY_PROMOTIONS",
-//   "type": "system"
-// }, {
-//   "id": "CATEGORY_SOCIAL",
-//   "name": "CATEGORY_SOCIAL",
-//   "type": "system"
-// }, {
-//   "id": "CATEGORY_UPDATES",
-//   "name": "CATEGORY_UPDATES",
-//   "type": "system"
-// }
-];
+}];

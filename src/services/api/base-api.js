@@ -1,7 +1,7 @@
 import MessageBus from '../../index.bus';
 import TokenStorage from '../storage/token-storage';
 import { EVENTS } from '../../index.constants';
-
+import axios from 'axios';
 export default class BaseApi {
   constructor() {
     this.BASE_URL = 'https://www.googleapis.com/gmail/v1/users';
@@ -14,9 +14,9 @@ export default class BaseApi {
   }
 
   _interceptor(res) {
-    if (!res.ok && res.status === 401) {
+    if (res.status === 401) {
       MessageBus.$emit(EVENTS.UNAUTHORIZED);
-      throw res.json();
+      throw res;
     }
 
     return res;
@@ -24,22 +24,32 @@ export default class BaseApi {
 
   _generateUrl(resourceId) {
     if (resourceId) {
-      return `${this.BASE_URL}/${this.USERID}/${this.BASE_PATH}/${resourceId}`;
+      return `${this.BASE_URL}/${this.USERID}/${this.BASE_PATH}/${resourceId}?`;
     } else {
-      return `${this.BASE_URL}/${this.USERID}/${this.BASE_PATH}`;
+      return `${this.BASE_URL}/${this.USERID}/${this.BASE_PATH}?`;
     }
   }
 
-  get(resourceId, options) {
-    let url = this._generateUrl(resourceId, options);
+  get(resourceId, query) {
+    let url = this._generateUrl(resourceId);
 
-    return fetch(`${url}?maxResults=30`, {
+    if (query && query.constructor === Object) {
+      Object.keys(query).forEach(key => {
+        if (query[key] instanceof Array) {
+          query[key].forEach(param => {
+            url += `${key}=${param}&`;
+          });
+        } else {
+          url += `${key}=${query[key]}&`;
+        }
+      });
+    }
+
+    return axios.get(`${url}`, {
       headers: {
         Authorization: `Bearer ${TokenStorage.getParsed().access_token}`
       }
-    })
-      .then(this._interceptor.bind(this))
-      .then(res => res.json());
+    }).then(this._interceptor.bind(this));
   }
 
   create() {

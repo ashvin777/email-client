@@ -4,12 +4,33 @@
 
 <template>
   <div class="messages-container">
-    <header>{{label.name}}</header>
+    <header>
+      <div class="top">
+        <div class="label">{{label.name}}</div>
+        <div class="search">
+          <i class="icon-search"></i>
+          <input type="search" placeholder="Search messages..."/>
+        </div>
+      </div>
+      <div class="bottom">
+
+        <ul class="tabs">
+          <li class="tab"
+            v-for="(category, index) in categories"
+            :class="{ active: selectedCategory.id === category.id }"
+            @click="selectCategory(category)"
+            :key="index">
+            {{category.name}}
+          </li>
+        </ul>
+      </div>
+    </header>
 
     <div class="body">
-      <ul>
+
+      <ul infinite-wrapper>
         <li
-          v-for="(thread, index) in threads"
+          v-for="(thread, key, index) in threads"
           :key="index"
           :class="{
             active :  selected.id === thread.id,
@@ -17,16 +38,30 @@
           }"
           @click="select(thread)">
 
-          <div class="from">
-            {{thread.messages[0].headers.From | from}}
-          </div>
-          <div class="subject">
-            {{thread.messages[0].headers.Subject}}</div>
-          <div class="timestamp">
-            {{thread.messages[0].headers.Date | moment('from', 'now')}}
-          </div>
+          {{thread.id}}
+          <!-- <div class="icons">
+            <i class="icon-paperclip" v-if="isMimeMixedType(thread)"></i>
+            <i class="icon-read" v-if="!isUnread(thread)"></i>
+            <i class="icon-unread" v-if="isUnread(thread)"></i>
+          </div> -->
+
+          <!-- <div class="from">
+            <span v-for="(message, index) in thread.messages" :key="index">{{message.headers.From | from}}</span>
+          </div> -->
+
+          <!-- <div class="subject">
+            <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span>
+            {{thread.id}}
+            <span>{{thread.messages[0].headers.Subject}}</span>
+            <span class="snippet" v-html="thread.messages[0].snippet"></span>
+          </div> -->
+
+          <!-- <div class="timestamp">
+            {{thread.messages[0].headers.Date | moment('Do MMMM (h:mm a)')}}
+          </div> -->
 
         </li>
+        <infinite-loading @infinite="loadMore"  force-use-infinite-wrapper="true"></infinite-loading>
       </ul>
     </div>
   </div>

@@ -31,10 +31,39 @@ ul{
 }
 
 ::-webkit-scrollbar-track {
-  background: $gray-lightest;
+  background: $blue-lightest;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $gray-lighter;
+  background-color: $blue-lighter;
   border-radius: 10px;
+}
+
+.tabs{
+  display: inline-flex;
+  font-size: 14px;
+
+  .tab{
+    padding: 10px 15px;
+    color: $gray;
+    position: relative;
+    // transition: all 300ms;
+    cursor: pointer;
+
+    &.active{
+      color: $dark;
+      font-weight: 600;
+
+      &:after{
+        position: absolute;
+        content: '';
+        width: 100%;
+        left: 0;
+        bottom: -2px;
+        height: 0px;
+        width: 100%;
+        border-bottom: 2px solid $dark;
+      }
+    }
+  }
 }

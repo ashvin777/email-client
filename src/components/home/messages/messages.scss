@@ -4,35 +4,102 @@
   padding: 20px;
   padding-top: 30px;
   padding-bottom: 0;
-  width: 500px;
+  padding-right: 0;
+  min-width: 500px;
+  flex: 1;
+  position: relative;
 
   header{
     font-size: $largest-font;
     width: 100%;
-    padding-bottom: 10px;
-    border-bottom: 2px solid $gray-lightest;
+    border-bottom: 2px solid $blue-lightest;
+    -webkit-app-region: drag;
+
+    .top{
+      .search{
+        position: absolute;
+        top: 38px;
+        right: 21px;
+
+        input{
+          width: 300px;
+        }
+      }
+    }
+
+    .bottom{
+      padding-top: 10px;
+    }
   }
 
   .body{
     margin-top: 20px;
     padding-right: 20px;
     overflow: auto;
-    height: calc( 100% - 70px);
+    height: calc( 100% - 113px);
 
     ul{
+      height: 100%;
+
       li{
         display: flex;
         padding: 10px 20px;
         border-radius: 5px;
-        padding-left: 30px;
         cursor: pointer;
         transition: background 100ms;
         position: relative;
 
+        .icons{
+          padding-right: 10px;
+          position: relative;
+          width: 40px;
+
+          .icon-paperclip{
+            position: absolute;
+            font-size: $light-font;
+            padding-right: 5px;
+            vertical-align: middle;
+            height: 8px;
+            top: 4px;
+            left: 0;
+            transition: all 300ms;
+          }
+
+          .icon-unread, .icon-read{
+            position: absolute;
+            display: inline-block;
+            height: 8px;
+            width: 8px;
+            background: $blue-lighter;
+            border-radius: 2px;
+            transition: all 300ms;
+            top: 5px;
+            left: 25px;
+          }
+
+          .icon-unread{
+            background: $blue;
+          }
+        }
+
         .from{
-          min-width: 30%;
-          width: 30%;
+          min-width: 20%;
+          width: 20%;
           font-weight: $medium-weight;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          padding-right: 20px;
+
+          span:after{
+            content: ', ';
+          }
+
+          span:last-child{
+            &:after{
+              content: '';
+            }
+          }
         }
 
         .subject{
@@ -40,19 +107,57 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
+          padding-right: 20px;
           color: $gray;
+          font-weight: $light-weight;
+
+          .category{
+            background: $blue;
+            font-size: 10px;
+            color: white;
+            font-weight: 500;
+            padding: 0px 5px;
+            padding-top: 1px;
+            margin-top: 1px;
+            display: inline-block;
+            margin-right: 5px;
+            border-radius: 2px;
+            vertical-align: top;
+
+            &.SOCIAL{
+              background: $amber;
+            }
+
+            &.PROMOTIONS{
+              background: $green-light;
+            }
+
+            &.UPDATES {
+              background: $blue;
+            }
+          }
+
+          .snippet{
+            color: $gray;
+            padding-left: 10px;
+          }
         }
 
         .timestamp{
           min-width: 20%;
           width: 20%;
           text-align: right;
+          color: $gray;
+          font-size: 10px;
+          line-height: $medium-font;
+          font-weight: $medium-weight;
+          min-width: 100px;
         }
 
         &:hover{
           background: $blue-lightest;
 
-          &.unread:before{
+          .icon-unread{
             transform: scale(1.5);
           }
         }
@@ -61,26 +166,34 @@
           background: $blue-lighter;
         }
 
+        &.unread{
+
+          .from, .subject{
+            color: $dark;
+            font-weight: 600;
+          }
+
+          .timestamp{
+            font-weight: 600;
+          }
+
+          .snippet{
+            color: $gray;
+            font-weight: $light-weight;
+          }
+        }
+
         &.active{
           background: $blue;
           color: white;
 
-          .subject{
-            color: white;
+          .icon-unread{
+            transform: scale(1.5);
+            background: white;
           }
-        }
 
-        &.unread{
-          &:before{
-            position: absolute;
-            content: '';
-            height: 8px;
-            width: 8px;
-            background: $blue;
-            border-radius: 2px;
-            left: 10px;
-            top: 15px;
-            transition: all 300ms;
+          .subject, .from, .timestamp{
+            color: white;
           }
         }
       }

@@ -1,4 +1,5 @@
 import BaseApi from "./base-api";
+import axios from 'axios';
 
 class ProfileApi extends BaseApi{
   constructor() {
@@ -8,7 +9,7 @@ class ProfileApi extends BaseApi{
   }
 
   getMoreDetails(emailAddress) {
-    return fetch(`http://picasaweb.google.com/data/entry/api/user/${emailAddress}?alt=json`).then(res => res.json());
+    return axios.get(`http://picasaweb.google.com/data/entry/api/user/${emailAddress}?alt=json`);
   }
 }
 

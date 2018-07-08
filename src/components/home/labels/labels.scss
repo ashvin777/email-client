@@ -8,6 +8,7 @@
   height: 100%;
   -webkit-app-region: drag;
   position: relative;
+  overflow: hidden;
 
   header{
     padding: 20px;
@@ -32,20 +33,29 @@
         padding: 10px;
         padding-left: 20px;
         cursor: pointer;
-        transition: background 100ms;
+        transition: all 100ms;
+
+        i{
+          padding-right: 10px;
+          vertical-align: top;
+          margin-top: 1px;
+          display: inline-block;
+        }
 
         .count{
           float:right;
-          background: $red;
-          padding: 0 10px;
-          border-radius: 10px;
+          background: $blue;
+          padding: 0 5px;
+          border-radius: 2px;
           color: white;
-          font-size: $light-font;
+          font-size: 10px;
           margin-top: 2px;
+          padding-top: 1px;
         }
 
         &:hover{
           background: $dark-light;
+          transform: scale(1.1);
         }
 
         &:active{
@@ -55,7 +65,7 @@
         &.active{
           background: white;
           color: $dark;
-          font-weight: $medium-weight;
+          font-weight: 600;
         }
       }
     }

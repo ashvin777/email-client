@@ -17,6 +17,8 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.2",
     "vue": "^2.5.16",
+    "vue-infinite-loading": "^2.3.1",
+    "vue-infinite-scroll": "^2.0.2",
     "vue-moment": "^4.0.0",
     "vue-router": "^3.0.1"
   },
@@ -25,6 +27,7 @@
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
     "electron": "^2.0.2",
+    "vue-svg-loader": "^0.5.0",
     "vue-template-compiler": "^2.5.16"
   },
   "eslintConfig": {
