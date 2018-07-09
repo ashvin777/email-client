@@ -34,12 +34,12 @@
 
   .body{
     margin-top: 20px;
-    padding-right: 20px;
-    overflow: auto;
     height: calc( 100% - 113px);
 
     ul{
       height: 100%;
+      overflow: auto;
+      padding-right: 20px;
 
       li{
         display: flex;

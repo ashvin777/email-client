@@ -15,7 +15,7 @@ export default {
 
   data() {
     return {
-      threads: {},
+      threads: [],
       selected: {},
       categories: CATEGORIES,
       selectedCategory: CATEGORIES[0],
@@ -32,14 +32,8 @@ export default {
 
   watch: {
     label() {
-      //this.loadMessages();
-      this.threads = {};
-      this.loadMore();
+      this.threads = [];
     }
-  },
-
-  mounted() {
-    //this.loadMessages();
   },
 
   methods: {
@@ -75,7 +69,7 @@ export default {
 
     selectCategory(category) {
       this.selectedCategory = category;
-      //this.loadMessages();
+      this.threads = [];
     },
 
     getThreadParams() {
@@ -83,29 +77,28 @@ export default {
 
       params.labelIds = [this.label.id];
       params.maxResults = 5;
-      params.nextPageToken = this.nextPageToken;
+      params.pageToken = this.nextPageToken;
       if (this.selectedCategory.id !== CATEGORY_IDS.PRIMARY) {
         params.labelIds.push(this.selectedCategory.id);
-      } else {
-        params.q = ' -category:(updates OR promotions OR social OR forums)';
       }
-
-      console.log(params);
+      //else {
+        //params.q = ' -category:(updates OR promotions OR social OR forums)';
+      //}
       return params;
     },
 
     getAllThreads() {
       return threadsApi.get(null, this.getThreadParams()).then(res => {
         this.nextPageToken = res.data.nextPageToken;
-        console.log('TOKEN ', res.data.nextPageToken);
         res.data.threads.forEach(thread => {
-          this.$set(this.threads, thread.id, thread);
+          this.threads.push(thread);
+          this.getThreadMessages(thread, this.threads.length - 1);
         });
         return res;
       });
     },
 
-    getThreadMessages(thread) {
+    getThreadMessages(thread, index) {
       return threadsApi.get(thread.id).then(res => {
         if (res.data && res.data.messages) {
           res.data.messages = res.data.messages.map(message => {
@@ -118,17 +111,17 @@ export default {
             return message;
           });
           thread = res.data;
+          this.$set(this.threads, index, thread);
         }
       });
     },
 
     loadMore($state) {
-      //setTimeout(() => {
-        //console.log('load more----------------');
+      setTimeout(() => {
         if (this.label && this.label.id) {
-          //this.getAllThreads().then(() => $state.loaded());
+          this.getAllThreads().then(() => $state.loaded());
         }
-      //}, 1000);
+      }, 1000);
     }
   }
 };

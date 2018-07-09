@@ -28,40 +28,39 @@
 
     <div class="body">
 
-      <ul infinite-wrapper>
+      <ul>
         <li
-          v-for="(thread, key, index) in threads"
+          v-for="(thread, index) in threads"
           :key="index"
           :class="{
-            active :  selected.id === thread.id,
+            active : selected.id === thread.id,
             unread: isUnread(thread)
           }"
           @click="select(thread)">
 
-          {{thread.id}}
-          <!-- <div class="icons">
+          <div class="icons">
             <i class="icon-paperclip" v-if="isMimeMixedType(thread)"></i>
             <i class="icon-read" v-if="!isUnread(thread)"></i>
             <i class="icon-unread" v-if="isUnread(thread)"></i>
-          </div> -->
+          </div>
 
-          <!-- <div class="from">
+          <div class="from">
             <span v-for="(message, index) in thread.messages" :key="index">{{message.headers.From | from}}</span>
-          </div> -->
+          </div>
 
-          <!-- <div class="subject">
+          <div class="subject">
             <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span>
             {{thread.id}}
             <span>{{thread.messages[0].headers.Subject}}</span>
             <span class="snippet" v-html="thread.messages[0].snippet"></span>
-          </div> -->
+          </div>
 
-          <!-- <div class="timestamp">
+          <div class="timestamp">
             {{thread.messages[0].headers.Date | moment('Do MMMM (h:mm a)')}}
-          </div> -->
+          </div>
 
         </li>
-        <infinite-loading @infinite="loadMore"  force-use-infinite-wrapper="true"></infinite-loading>
+        <infinite-loading @infinite="loadMore"></infinite-loading>
       </ul>
     </div>
   </div>
