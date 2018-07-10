@@ -32,11 +32,19 @@ export default {
 
   watch: {
     label() {
-      this.threads = [];
+      this.reloadThreads()
     }
   },
 
   methods: {
+
+    reloadThreads() {
+      this.nextPageToken = '';
+      this.threads = [];
+      setTimeout(() => {
+        this.$refs.infiniteLoading.attemptLoad();
+      }, 1000);
+    },
 
     select(thread) {
       this.selected = thread;
@@ -69,39 +77,38 @@ export default {
 
     selectCategory(category) {
       this.selectedCategory = category;
-      this.threads = [];
+      this.reloadThreads();
     },
 
     getThreadParams() {
-      let params = {};
-
-      params.labelIds = [this.label.id];
-      params.maxResults = 5;
-      params.pageToken = this.nextPageToken;
-      if (this.selectedCategory.id !== CATEGORY_IDS.PRIMARY) {
-        params.labelIds.push(this.selectedCategory.id);
-      }
-      //else {
-        //params.q = ' -category:(updates OR promotions OR social OR forums)';
-      //}
-      return params;
+      return {
+        labelIds: [this.label.id],
+        labeRIds: 20,
+        pageToken: this.nextPageToken,
+        format: 'FULL',
+        q: `category:${this.selectedCategory.id}`
+      };
     },
 
     getAllThreads() {
       return threadsApi.get(null, this.getThreadParams()).then(res => {
-        this.nextPageToken = res.data.nextPageToken;
-        res.data.threads.forEach(thread => {
-          this.threads.push(thread);
-          this.getThreadMessages(thread, this.threads.length - 1);
-        });
-        return res;
+        if (res.nextPageToken && res.threads) {
+          this.nextPageToken = res.nextPageToken;
+          res.threads.forEach(thread => {
+            this.threads.push(thread);
+            this.getThreadMessages(thread, this.threads.length - 1);
+          });
+          return res;
+        } else {
+          throw new Error('No data available');
+        }
       });
     },
 
     getThreadMessages(thread, index) {
       return threadsApi.get(thread.id).then(res => {
-        if (res.data && res.data.messages) {
-          res.data.messages = res.data.messages.map(message => {
+        if (res && res.messages) {
+          res.messages = res.messages.map(message => {
             let headers = {};
             message.payload.headers.forEach(header => {
               headers[header.name] = header.value;
@@ -110,7 +117,7 @@ export default {
             message.headers = headers;
             return message;
           });
-          thread = res.data;
+          thread = res;
           this.$set(this.threads, index, thread);
         }
       });
@@ -119,7 +126,7 @@ export default {
     loadMore($state) {
       setTimeout(() => {
         if (this.label && this.label.id) {
-          this.getAllThreads().then(() => $state.loaded());
+          this.getAllThreads().then(() => $state.loaded());//.catch(()=> $state.complete());
         }
       }, 1000);
     }

@@ -1,71 +1,109 @@
-const {OAuth2Client} = require('google-auth-library');
-const http = require('http');
-const url = require('url');
-const querystring = require('querystring');
-const opn = require('opn');
+const fs = require('fs');
+const {
+  google
+} = require('googleapis');
+const nedb = require('nedb');
+const request = require('request');
+const db = new nedb({
+  filename: './data/nedb',
+  autoload: true
+});
 
-// Download your OAuth2 configuration from the Google
-const keys = require('./keys.json');
+const TOKEN_PATH = './data/token';
+const HISTORY_ID_PATH = './data/historyId';
+const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me';
 
-/**
- * Start by acquiring a pre-authenticated oAuth2 client.
- */
-async function main() {
-  try {
-    const oAuth2Client = await getAuthenticatedClient();
-    // Make a simple request to the Google Plus API using our pre-authenticated client. The `request()` method
-    // takes an AxiosRequestConfig object.  Visit https://github.com/axios/axios#request-config.
-    const url = 'https://www.googleapis.com/plus/v1/people?query=pizza';
-    const res = await oAuth2Client.request({url})
-    console.log(res.data);
-  } catch (e) {
-    console.error(e);
+const API_PATH = {
+  THREADS: `${BASE_URL}/threads`,
+  MESSAGES: `${BASE_URL}/messages`,
+  LABELS: `${BASE_URL}/labels`
+};
+
+class GoogleSync {
+  constructor() {
+    this.token = '';
+    this.init();
   }
-  process.exit();
-}
 
-/**
- * Create a new OAuth2Client, and go through the OAuth2 content
- * workflow.  Return the full client to the callback.
- */
-function getAuthenticatedClient() {
-  return new Promise((resolve, reject) => {
-    // create an oAuth client to authorize the API call.  Secrets are kept in a `keys.json` file,
-    // which should be downloaded from the Google Developers Console.
-    const oAuth2Client = new OAuth2Client(
-      keys.web.client_id,
-      keys.web.client_secret,
-      keys.web.redirect_uris[0]
-    );
+  init() {
+    this.token = this.getToken();
+    this.getHistoryId();
+    if (this.token && this.token.access_token) {
+      this.getThreads();
+    }
+  }
 
-    // Generate the url that will be used for the consent dialog.
-    const authorizeUrl = oAuth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: 'https://www.googleapis.com/auth/plus.me'
-    });
+  getHistoryId() {
+    try {
+      const token = fs.readFileSync(HISTORY_ID_PATH, 'utf8');
+      return token;
+    } catch (e) {
+      console.log('No historyId is available')
+      return '';
+    }
+  }
 
-    // Open an http server to accept the oauth callback. In this simple example, the
-    // only request to our webserver is to /oauth2callback?code=<code>
-    const server = http.createServer(async (req, res) => {
-      if (req.url.indexOf('/oauth2callback') > -1) {
-        // acquire the code from the querystring, and close the web server.
-        const qs = querystring.parse(url.parse(req.url).query);
-        console.log(`Code is ${qs.code}`);
-        res.end('Authentication successful! Please return to the console.');
-        server.close();
+  getToken() {
+    try {
+      const token = fs.readFileSync(TOKEN_PATH, 'utf8');
+      return JSON.parse(token);
+    } catch (e) {
+      console.log('Token not available')
+      return '';
+    }
+  }
 
-        // Now that we have the code, use that to acquire tokens.
-        const r = await oAuth2Client.getToken(qs.code)
-        // Make sure to set the credentials on the OAuth2 client.
-        oAuth2Client.setCredentials(r.tokens);
-        console.info('Tokens acquired.');
-        resolve(oAuth2Client);
+  setHistoryId(historyId) {
+    try {
+      fs.writeFileSync(HISTORY_ID_PATH, historyId, 'utf8');
+    } catch (e) {
+      console.log('Set historyId failed')
+    }
+  }
+
+  getOptions(url, qs) {
+    return {
+      method: 'GET',
+      url: url,
+      qs: qs || { maxResults: 20 },
+      headers: {
+        Authorization: `Bearer ${this.token.access_token}`
       }
-    }).listen(3000, () => {
-      // open the browser to the authorize url to start the workflow
-      opn(authorizeUrl);
+    }
+  }
+
+  getThreads() {
+    let options = this.getOptions(API_PATH.THREADS);
+
+    request(options, (error, res, body) => {
+      body = JSON.parse(body || '');
+      if (error || body.error) {
+        console.error('Error loading the API data', body.error)
+        return;
+      };
+
+      if (body && body.threads instanceof Array && body.threads.length > 0) {
+        this.setHistoryId(body.threads[0].historyId);
+      }
+
+      body.threads.forEach(thread => {
+        //API call for each thread
+        db.insert(thread, (err) => {
+          let options = this.getOptions(API_PATH.THREADS + '/' + thread.id);
+          request(options, (error, res, body) => {
+            body = JSON.parse(body || '');
+            if (error || body.error) {
+              console.error('Error loading the thread API data', body.error)
+              return;
+            };
+            db.update({id: thread.id}, body);
+          });
+
+        });
+
+      });
     });
-  });
+  }
 }
 
-main();
+module.exports = new GoogleSync();

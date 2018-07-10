@@ -36,10 +36,10 @@ export const MESSAGE_MIMES = {
 
 export const CATEGORY_IDS = {
   PRIMARY: 'primary',
-  FORUMS: 'CATEGORY_FORUMS',
-  PROMOTIONS: 'CATEGORY_PROMOTIONS',
-  SOCIAL: 'CATEGORY_SOCIAL',
-  UPDATES: 'CATEGORY_UPDATES'
+  FORUMS: 'forums',
+  PROMOTIONS: 'promotions',
+  SOCIAL: 'social',
+  UPDATES: 'updates'
 };
 
 export const CATEGORIES = [{

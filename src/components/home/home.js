@@ -25,8 +25,8 @@ export default {
   mounted() {
 
     profileApi.get().then(res => {
-      profileApi.getMoreDetails(res.data.emailAddress).then(more => {
-        let profile = res.data;
+      profileApi.getMoreDetails(res.emailAddress).then(more => {
+        let profile = res;
         profile.photo = more.data.entry.gphoto$thumbnail.$t;
         profile.name = more.data.entry.gphoto$nickname.$t;
         this.profile = profile;

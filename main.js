@@ -85,4 +85,5 @@ function LoginTokenReceived(event, payload) {
   win.webContents.send('token', payload);
   loginServer.close();
   loginWin.close();
+  fs.writeFileSync('./data/token.txt', payload, 'utf8');
 }

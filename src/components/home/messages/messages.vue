@@ -36,6 +36,7 @@
             active : selected.id === thread.id,
             unread: isUnread(thread)
           }"
+          v-if="thread && thread.messages"
           @click="select(thread)">
 
           <div class="icons">
@@ -45,12 +46,11 @@
           </div>
 
           <div class="from">
-            <span v-for="(message, index) in thread.messages" :key="index">{{message.headers.From | from}}</span>
+            <span>{{thread.messages[0].headers.From | from}} {{thread.messages.length > 1 ? `(${thread.messages.length})` : ''}}</span>
           </div>
 
           <div class="subject">
             <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span>
-            {{thread.id}}
             <span>{{thread.messages[0].headers.Subject}}</span>
             <span class="snippet" v-html="thread.messages[0].snippet"></span>
           </div>
@@ -60,7 +60,7 @@
           </div>
 
         </li>
-        <infinite-loading @infinite="loadMore"></infinite-loading>
+        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="10" ></infinite-loading>
       </ul>
     </div>
   </div>

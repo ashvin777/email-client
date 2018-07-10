@@ -1,7 +1,7 @@
 import MessageBus from '../../index.bus';
 import TokenStorage from '../storage/token-storage';
 import { EVENTS } from '../../index.constants';
-import axios from 'axios';
+
 export default class BaseApi {
   constructor() {
     this.BASE_URL = 'https://www.googleapis.com/gmail/v1/users';
@@ -14,7 +14,8 @@ export default class BaseApi {
   }
 
   _interceptor(res) {
-    if (res.status === 401) {
+
+    if (res.status === 401 || ( res.error &&res.error.code === 401)) {
       MessageBus.$emit(EVENTS.UNAUTHORIZED);
       throw res;
     }
@@ -45,11 +46,14 @@ export default class BaseApi {
       });
     }
 
-    return axios.get(`${url}`, {
+    return fetch(url, {
       headers: {
         Authorization: `Bearer ${TokenStorage.getParsed().access_token}`
       }
-    }).then(this._interceptor.bind(this));
+    })
+      .then(res => res.json())
+      .then(this._interceptor.bind(this))
+      .catch(this._interceptor.bind(this));
   }
 
   create() {
