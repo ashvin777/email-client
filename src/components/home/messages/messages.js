@@ -6,6 +6,8 @@ import {
 } from "../../../index.constants";
 import InfiniteLoading from 'vue-infinite-loading';
 
+const { ipcRenderer } = window.require('electron');
+
 export default {
   props: ['label'],
 
@@ -16,6 +18,7 @@ export default {
   data() {
     return {
       threads: [],
+      threadsTemp: [],
       selected: {},
       categories: CATEGORIES,
       selectedCategory: CATEGORIES[0],
@@ -36,14 +39,21 @@ export default {
     }
   },
 
+  mounted() {
+    ipcRenderer.send('threads');
+    ipcRenderer.on('threads', (evt, payload) => {
+      this.threads = payload;
+    });
+  },
+
   methods: {
 
     reloadThreads() {
-      this.nextPageToken = '';
-      this.threads = [];
-      setTimeout(() => {
-        this.$refs.infiniteLoading.attemptLoad();
-      }, 1000);
+      // this.nextPageToken = '';
+      // this.threads = [];
+      // setTimeout(() => {
+      //   this.$refs.infiniteLoading.attemptLoad();
+      // }, 1000);
     },
 
     select(thread) {
@@ -91,18 +101,19 @@ export default {
     },
 
     getAllThreads() {
-      return threadsApi.get(null, this.getThreadParams()).then(res => {
-        if (res.nextPageToken && res.threads) {
-          this.nextPageToken = res.nextPageToken;
-          res.threads.forEach(thread => {
-            this.threads.push(thread);
-            this.getThreadMessages(thread, this.threads.length - 1);
-          });
-          return res;
-        } else {
-          throw new Error('No data available');
-        }
-      });
+      // return threadsApi.get(null, this.getThreadParams()).then(res => {
+      //   if (res.nextPageToken && res.threads) {
+      //     this.nextPageToken = res.nextPageToken;
+      //     res.threads.forEach(thread => {
+      //       this.threads.push(thread);
+      //       this.getThreadMessages(thread, this.threads.length - 1);
+      //     });
+      //     return res;
+      //   } else {
+      //     throw new Error('No data available');
+      //   }
+      // });
+      // this.threadsTemp.push(this.threads);
     },
 
     getThreadMessages(thread, index) {
@@ -126,7 +137,7 @@ export default {
     loadMore($state) {
       setTimeout(() => {
         if (this.label && this.label.id) {
-          this.getAllThreads().then(() => $state.loaded());//.catch(()=> $state.complete());
+          // this.getAllThreads();//.then(() => $state.loaded());//.catch(()=> $state.complete());
         }
       }, 1000);
     }

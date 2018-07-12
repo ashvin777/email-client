@@ -1,6 +1,7 @@
 const electron = require('electron');
 const http = require('http');
 const fs = require('fs');
+const thread = require('./thread');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
@@ -48,6 +49,12 @@ app.on('window-all-closed', () => {
 app.on('will-finish-launching', function () {
   ipcMain.on('login', LoginWithGoogle);
   ipcMain.on('token', LoginTokenReceived);
+
+  ipcMain.on('threads', () => {
+    thread.list().then(res => {
+      win.webContents.send('threads', res);
+    });
+  });
 });
 
 app.on('activate', () => {

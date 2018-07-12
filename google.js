@@ -7,7 +7,8 @@ const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me';
 const API_PATH = {
   THREADS: `${BASE_URL}/threads`,
   MESSAGES: `${BASE_URL}/messages`,
-  LABELS: `${BASE_URL}/labels`
+  LABELS: `${BASE_URL}/labels`,
+  HISTORY: `${BASE_URL}/history`
 };
 
 class GoogleSync {
@@ -21,7 +22,11 @@ class GoogleSync {
     this.token = this.getToken();
     this.historyId = this.getHistoryId();
     if (this.token && this.token.access_token) {
-      this.getThreads();
+      if (this.getHistoryId()) {
+        this.getHistory();
+      } else {
+        this.getThreads();
+      }
     }
   }
 
@@ -64,37 +69,48 @@ class GoogleSync {
   }
 
   getThreads() {
+
     //when no history is loaded
-    if (!this.historyId) {
-      let options = this.getOptions(API_PATH.THREADS);
-      request(options, (error, res, body) => {
-        body = JSON.parse(body || '');
+    let options = this.getOptions(API_PATH.THREADS);
+    request(options, (error, res, body) => {
+      body = JSON.parse(body || '');
 
-        if (error || body.error) {
-          console.error('Error loading the API data', body.error)
-          return;
-        };
+      if (error || body.error) {
+        console.error('Error loading the API data', body.error)
+        return;
+      };
 
-        console.log(body.threads.length);
+      if (body && body.threads instanceof Array && body.threads.length > 0) {
+        this.setHistoryId(body.threads[0].historyId);
+        body.threads.forEach(this.getThreadDetails);
+      }
 
-        if (body && body.threads instanceof Array && body.threads.length > 0) {
-          this.setHistoryId(body.threads[0].historyId);
+    });
+  }
 
-          body.threads.forEach(thread => {
-            let options = this.getOptions(API_PATH.THREADS + '/' + thread.id);
-            request(options, (error, res, body) => {
-              body = JSON.parse(body || '');
-              if (error || body.error) {
-                console.error('Error loading the thread API data', body.error)
-                return;
-              };
-              this.writeThread(body);
-            });
-          });
-        }
+  getThreadDetails(thread) {
+    let options = this.getOptions(API_PATH.THREADS + '/' + thread.id);
+    request(options, (error, res, body) => {
+      body = JSON.parse(body || '');
+      if (error || body.error) {
+        console.error('Error loading the thread detail API data', body.error)
+        return;
+      };
+      this.writeThread(body);
+    });
+  }
 
-      });
-    }
+  getMessageDetails(message, callback) {
+    let options = this.getOptions(API_PATH.MESSAGES + '/' + message.id);
+    request(options, (error, res, body) => {
+      body = JSON.parse(body || '');
+      if (error || body.error) {
+        console.error('Error loading the message API data', body.error)
+        return;
+      };
+
+      callback(body);
+    });
   }
 
   writeThread(thread) {
@@ -126,14 +142,57 @@ class GoogleSync {
           delete message.payload.parts;
           return message;
         });
-
         fs.writeFileSync(`./data/threads/${thread.historyId}/thread.json`, JSON.stringify(thread), 'utf8');
-
-        //fs.writeFileSync(`./data/threads/${thread.historyId}.json`, JSON.stringify(thread), 'utf8');
       }
     } catch (e) {
       console.log('error in file write', e);
     }
+  }
+
+  getHistory() {
+    //when no history is loaded
+
+    let url = `${API_PATH.HISTORY}`;
+    let options = this.getOptions(API_PATH.HISTORY, {
+      startHistoryId: this.getHistoryId()
+    });
+
+    request(options, (error, res, body) => {
+      body = JSON.parse(body || '');
+      if (error || body.error) {
+        console.error('Error loading the history API data', body.error)
+        return;
+      };
+
+      if (body.history) {
+        console.log(body);
+        this.setHistoryId(body.historyId);
+
+        body.history.forEach(history => {
+
+          if (fs.existsSync(`./data/threads/${history.id}`) === false) {
+            fs.mkdirSync(`./data/threads/${history.id}`);
+          }
+
+          if (history.messagesAdded) {
+            history.messagesAdded.forEach(message => {
+              this.getThreadDetails({
+                id: message.message.threadId
+              });
+            });
+          }
+
+          if (history.messagesDeleted) {
+            history.messagesDeleted.forEach(message => {
+              this.getThreadDetails({
+                id: message.message.threadId
+              });
+            });
+          }
+        });
+
+      }
+    });
   }
 }
 
