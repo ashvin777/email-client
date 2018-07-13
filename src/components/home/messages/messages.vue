@@ -50,13 +50,13 @@
           </div>
 
           <div class="subject">
-            <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span>
+            <!-- <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span> -->
             <span>{{thread.messages[0].headers.Subject}}</span>
             <span class="snippet" v-html="thread.messages[0].snippet"></span>
           </div>
 
           <div class="timestamp">
-            {{thread.messages[0].headers.Date | moment('Do MMMM (h:mm a)')}}
+            {{thread.messages[thread.messages.length - 1].headers.Date | moment('Do MMMM (h:mm a)')}}
           </div>
 
         </li>

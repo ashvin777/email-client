@@ -1,9 +1,9 @@
 import threadsApi from "../../../services/api/threads-api";
 import {
   MESSAGE_MIMES,
-  CATEGORIES,
-  CATEGORY_IDS
+  CATEGORIES
 } from "../../../index.constants";
+
 import InfiniteLoading from 'vue-infinite-loading';
 
 const { ipcRenderer } = window.require('electron');

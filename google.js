@@ -21,6 +21,7 @@ class GoogleSync {
   init() {
     this.token = this.getToken();
     this.historyId = this.getHistoryId();
+
     if (this.token && this.token.access_token) {
       if (this.getHistoryId()) {
         this.getHistory();
@@ -72,17 +73,17 @@ class GoogleSync {
 
     //when no history is loaded
     let options = this.getOptions(API_PATH.THREADS);
+    console.log(options);
     request(options, (error, res, body) => {
       body = JSON.parse(body || '');
-
       if (error || body.error) {
-        console.error('Error loading the API data', body.error)
+        console.error('Error loading the API data', body.error);
         return;
-      };
+      }
 
       if (body && body.threads instanceof Array && body.threads.length > 0) {
         this.setHistoryId(body.threads[0].historyId);
-        body.threads.forEach(this.getThreadDetails);
+        body.threads.forEach(this.getThreadDetails.bind(this));
       }
 
     });
@@ -95,7 +96,7 @@ class GoogleSync {
       if (error || body.error) {
         console.error('Error loading the thread detail API data', body.error)
         return;
-      };
+      }
       this.writeThread(body);
     });
   }
@@ -107,7 +108,7 @@ class GoogleSync {
       if (error || body.error) {
         console.error('Error loading the message API data', body.error)
         return;
-      };
+      }
 
       callback(body);
     });
@@ -116,7 +117,6 @@ class GoogleSync {
   writeThread(thread) {
     try {
       if (typeof thread === 'object') {
-        let threadTemp = {};
 
         if (fs.existsSync(`./data/threads`) === false) {
           fs.mkdirSync(`./data/threads`);

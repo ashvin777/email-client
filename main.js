@@ -2,6 +2,7 @@ const electron = require('electron');
 const http = require('http');
 const fs = require('fs');
 const thread = require('./thread');
+const google = require('./google');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
@@ -24,6 +25,8 @@ function createWindow() {
   });
 
   win.loadURL(url);
+  google.init();
+
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -53,6 +56,12 @@ app.on('will-finish-launching', function () {
   ipcMain.on('threads', () => {
     thread.list().then(res => {
       win.webContents.send('threads', res);
+    });
+  });
+
+  ipcMain.on('thread', (evt, payload) => {
+    thread.get(payload).then(res => {
+      win.webContents.send('thread', res);
     });
   });
 });
@@ -92,5 +101,6 @@ function LoginTokenReceived(event, payload) {
   win.webContents.send('token', payload);
   loginServer.close();
   loginWin.close();
-  fs.writeFileSync('./data/token.txt', payload, 'utf8');
+  google.init();
+  fs.writeFileSync('./data/token', payload, 'utf8');
 }

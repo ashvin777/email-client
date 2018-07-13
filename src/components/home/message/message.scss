@@ -1,4 +1,15 @@
+@import '../../../styles/consts';
+
 .message-container{
   overflow: auto;
   margin-right: 10px;
+  width: 50%;
+  padding: 0 20px;
+
+  header{
+    font-size: $largest-font;
+    width: 100%;
+    border-bottom: 2px solid $blue-lightest;
+    padding-top: 38px;
+  }
 }
