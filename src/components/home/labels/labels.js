@@ -1,5 +1,3 @@
-import labelsApi from "../../../services/api/labels-api";
-
 import { LABELS, LABEL_IDS } from "./labels.const";
 
 export default {
@@ -14,10 +12,7 @@ export default {
   },
 
   mounted() {
-    labelsApi.get(LABEL_IDS.INBOX).then(res => {
-      this.select(LABELS[0]);
-      this.labels[0].unread = res.messagesUnread;
-    });
+    this.select(LABELS[0]);
   },
 
   methods: {

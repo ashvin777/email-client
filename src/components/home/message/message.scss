@@ -3,13 +3,21 @@
 .message-container{
   overflow: auto;
   margin-right: 10px;
-  width: 50%;
   padding: 0 20px;
+  user-select: auto;
 
   header{
     font-size: $largest-font;
     width: 100%;
     border-bottom: 2px solid $blue-lightest;
     padding-top: 38px;
+  }
+
+  .body{
+    .message{
+      margin: 20px 0;
+      padding: 20px;
+      box-shadow: 0 0 10px $gray-lighter;
+    }
   }
 }

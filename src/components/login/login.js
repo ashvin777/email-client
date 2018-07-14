@@ -1,16 +1,12 @@
-const { ipcRenderer } = window.require('electron');
-import { GOOGLE_AUTH_URL } from "../../index.constants";
+import { STATES } from '../../index.constants';
+import Gmail from '../../services/gmail';
 
 export default {
-  data() {
-    return {
-      googleAuthUrl: GOOGLE_AUTH_URL
-    };
-  },
-
   methods: {
     login() {
-      ipcRenderer.send('login');
+      Gmail.login().then(res => {
+        this.$router.push(STATES.LOADING);
+      });
     }
   }
 };

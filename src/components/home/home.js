@@ -1,7 +1,6 @@
-import profileApi from "../../services/api/profile-api";
-
 import profileStorage from '../../services/storage/profile-storage';
 
+import Gmail from '../../services/gmail';
 import Labels from './labels/labels.vue';
 import Messages from './messages/messages.vue';
 import Message from './message/message.vue';
@@ -23,16 +22,13 @@ export default {
   },
 
   mounted() {
+    Gmail.getProfile().then(profile => {
+      profile.photo = profile.entry.gphoto$thumbnail.$t;
+      profile.name = profile.entry.gphoto$nickname.$t;
+      profile.emailAddress = profile.data.emailAddress;
 
-    profileApi.get().then(res => {
-      profileApi.getMoreDetails(res.emailAddress).then(more => {
-        let profile = res;
-        profile.photo = more.data.entry.gphoto$thumbnail.$t;
-        profile.name = more.data.entry.gphoto$nickname.$t;
-        this.profile = profile;
-        profileStorage.set(profile);
-      });
-    });
+      this.profile = profile;
+    })
   },
 
   methods: {

@@ -1,29 +1,22 @@
-import threadsApi from "../../../services/api/threads-api";
 import {
   MESSAGE_MIMES,
-  CATEGORIES
+  CATEGORIES,
+  LABELS,
+  CATEGORY_IDS
 } from "../../../index.constants";
 
-import InfiniteLoading from 'vue-infinite-loading';
-
-const { ipcRenderer } = window.require('electron');
+import Gmail from '../../../services/gmail';
 
 export default {
   props: ['label'],
 
-  components: {
-    InfiniteLoading
-  },
-
   data() {
     return {
       threads: [],
-      threadsTemp: [],
       selected: {},
-      categories: CATEGORIES,
+      labels : LABELS,
       selectedCategory: CATEGORIES[0],
-      busy: false,
-      nextPageToken: ''
+      categories: CATEGORIES
     };
   },
 
@@ -34,26 +27,22 @@ export default {
   },
 
   watch: {
-    label() {
-      this.reloadThreads()
+    label(label) {
+      if (this.label.id.toLowerCase() === this.labels.INBOX) {
+        this.getThreads(this.label.id, this.selectedCategory.id);
+      } else {
+        this.getThreads(this.label.id);
+      }
     }
-  },
-
-  mounted() {
-    ipcRenderer.send('threads');
-    ipcRenderer.on('threads', (evt, payload) => {
-      this.threads = payload;
-    });
   },
 
   methods: {
 
-    reloadThreads() {
-      // this.nextPageToken = '';
-      // this.threads = [];
-      // setTimeout(() => {
-      //   this.$refs.infiniteLoading.attemptLoad();
-      // }, 1000);
+    getThreads(label, category) {
+      console.log(label, category);
+      Gmail.getThreads({ label, category }).then(res => {
+        this.threads = res.threads;
+      });
     },
 
     select(thread) {
@@ -67,9 +56,9 @@ export default {
       }
     },
 
-    isMimeMixedType(thread) {
+    isMimeTypeRelated(thread) {
       if (thread.messages) {
-        return thread.messages.some(message => message.payload.mimeType === MESSAGE_MIMES.MULTIPART.MIXED);
+        return thread.messages.some(message => message.payload.mimeType === MESSAGE_MIMES.MULTIPART.RELATED);
       }
     },
 
@@ -87,59 +76,8 @@ export default {
 
     selectCategory(category) {
       this.selectedCategory = category;
-      this.reloadThreads();
-    },
-
-    getThreadParams() {
-      return {
-        labelIds: [this.label.id],
-        labeRIds: 20,
-        pageToken: this.nextPageToken,
-        format: 'FULL',
-        q: `category:${this.selectedCategory.id}`
-      };
-    },
-
-    getAllThreads() {
-      // return threadsApi.get(null, this.getThreadParams()).then(res => {
-      //   if (res.nextPageToken && res.threads) {
-      //     this.nextPageToken = res.nextPageToken;
-      //     res.threads.forEach(thread => {
-      //       this.threads.push(thread);
-      //       this.getThreadMessages(thread, this.threads.length - 1);
-      //     });
-      //     return res;
-      //   } else {
-      //     throw new Error('No data available');
-      //   }
-      // });
-      // this.threadsTemp.push(this.threads);
-    },
-
-    getThreadMessages(thread, index) {
-      return threadsApi.get(thread.id).then(res => {
-        if (res && res.messages) {
-          res.messages = res.messages.map(message => {
-            let headers = {};
-            message.payload.headers.forEach(header => {
-              headers[header.name] = header.value;
-            });
-            delete message.payload.headers;
-            message.headers = headers;
-            return message;
-          });
-          thread = res;
-          this.$set(this.threads, index, thread);
-        }
-      });
-    },
-
-    loadMore($state) {
-      setTimeout(() => {
-        if (this.label && this.label.id) {
-          // this.getAllThreads();//.then(() => $state.loaded());//.catch(()=> $state.complete());
-        }
-      }, 1000);
+      this.getThreads(this.label.id, category.id);
     }
+
   }
 };

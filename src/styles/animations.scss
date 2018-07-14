@@ -1,0 +1,55 @@
+.fh {
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+
+  @keyframes slideInCenter {
+    0% {
+      opacity: 0;
+      transform: translate3d(-50%, -60%, 0);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translate3d(-50%, -50%, 0);
+    }
+  }
+
+  @keyframes stripes-animation {
+    from { background-position: 0 0; }
+    to   { background-position: 80px 40px; }
+  }
+
+  @keyframes dotdot {
+    // shows empty dots ''
+    0%, 20% {
+      opacity: 0;
+    }
+    // shows single dot '.'
+    40% {
+      color: $gray-light;
+      text-shadow: 5px 0 0 transparent, 10px 0 0 transparent;
+    }
+    // shows two dots '..'
+    60% {
+      text-shadow: 5px 0 0 $gray-light, 10px 0 0 transparent;
+    }
+    //shows three dots '...'
+    80%, 100% {
+      text-shadow:5px 0 0 $gray-light, 10px 0 0 $gray-light;
+    }
+  }
+
+  @keyframes fadeIn {
+    0%{ opacity: 0 }
+    100%{ opacity: 1}
+  }
+}

@@ -13,8 +13,7 @@
         </div>
       </div>
       <div class="bottom">
-
-        <ul class="tabs">
+        <ul class="tabs" v-if="label.id && label.id.toLowerCase() === labels.INBOX">
           <li class="tab"
             v-for="(category, index) in categories"
             :class="{ active: selectedCategory.id === category.id }"
@@ -40,7 +39,7 @@
           @click="select(thread)">
 
           <div class="icons">
-            <i class="icon-paperclip" v-if="isMimeMixedType(thread)"></i>
+            <i class="icon-paperclip" v-if="isMimeTypeRelated(thread)"></i>
             <i class="icon-read" v-if="!isUnread(thread)"></i>
             <i class="icon-unread" v-if="isUnread(thread)"></i>
           </div>
@@ -60,7 +59,6 @@
           </div>
 
         </li>
-        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="10" ></infinite-loading>
       </ul>
     </div>
   </div>

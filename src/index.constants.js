@@ -1,23 +1,8 @@
 export const STATES = {
   HOME: '/home',
-  LOGIN: '/login'
+  LOGIN: '/login',
+  LOADING: '/loading'
 };
-
-export const GOOGLE_AUTH_PARAMS = {
-  CLIENT_ID: '991950553812-a8obm2p8obi1nnmq0og8t7ljivvv0kvo.apps.googleusercontent.com',
-  SCOPES: 'https://mail.google.com/',
-  REDIRECT_URL: 'http://localhost:64636',
-  DISCOVERY_DOCS: "[\"https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest\"]"
-};
-
-export const GOOGLE_AUTH_URL =
-  `https://accounts.google.com/o/oauth2/auth?` +
-  `scope=${GOOGLE_AUTH_PARAMS.SCOPES}&`+
-  `client_id=${GOOGLE_AUTH_PARAMS.CLIENT_ID}&` +
-  `redirect_uri=${GOOGLE_AUTH_PARAMS.REDIRECT_URL}&` +
-  `response_type=token&` +
-  `DISCOVERY_DOCS=${GOOGLE_AUTH_PARAMS.DISCOVERY_DOCS}`;
-
 
 export const EVENTS = {
   UNAUTHORIZED: 'unauthorized'
@@ -25,12 +10,13 @@ export const EVENTS = {
 
 export const MESSAGE_MIMES = {
   TEXT: {
-    PLAIN: 'text/plain',
+    PLAIN: 'text/plain', //for client which doesn't support HTML
     TEXT_HTML: 'text/html'
   },
   MULTIPART: {
-    ALTERNATIVE: 'multipart/alternative',
-    MIXED: 'multipart/mixed'
+    ALTERNATIVE: 'multipart/alternative', //include both plain and HTML
+    MIXED: 'multipart/mixed', //include text/html and attachments
+    RELATED: 'multipart/related' // have multiple multiparts - attachments case
   }
 };
 
@@ -40,6 +26,18 @@ export const CATEGORY_IDS = {
   PROMOTIONS: 'promotions',
   SOCIAL: 'social',
   UPDATES: 'updates'
+};
+
+
+export const LABELS = {
+  INBOX: 'inbox',
+  DRAFT: 'draft',
+  SENT: 'sent',
+  IMPORTANT: 'important',
+  UNREAD: 'unread',
+  SPAM: 'spam',
+  TASH: 'trash',
+  STARRED: 'starred'
 };
 
 export const CATEGORIES = [{
@@ -58,3 +56,28 @@ export const CATEGORIES = [{
   name: 'Forums',
   id: CATEGORY_IDS.FORUMS
 }];
+
+
+
+
+/*
+
+payload {
+  body: {
+    data: '' //for plain or html type above
+  },
+  mimeType : plain/html/multipart,
+
+  parts : [{
+    mimetype: plain/html/multipart(alternative/mixed/related)
+    ..
+    plain //if html not supported by client then use this as fallback
+    ..
+    parts: [{
+      mimetype: plain/html/multipart //if above parts is related
+    }]
+  }]
+}
+
+other parts are - application/msword,
+*/

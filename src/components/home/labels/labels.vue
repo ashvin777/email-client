@@ -18,7 +18,7 @@
           @click="select(label)">
           <i :class="'icon-' +label.icon"></i>
           <span class="text">{{label.name}}</span>
-          <span class="count" v-if="label.unread">{{label.unread}}</span>
+          <!-- <span class="count" v-if="label.unread">{{label.unread}}</span> -->
         </li>
       </ul>
     </div>
