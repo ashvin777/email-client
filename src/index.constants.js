@@ -11,7 +11,7 @@ export const EVENTS = {
 export const MESSAGE_MIMES = {
   TEXT: {
     PLAIN: 'text/plain', //for client which doesn't support HTML
-    TEXT_HTML: 'text/html'
+    HTML: 'text/html'
   },
   MULTIPART: {
     ALTERNATIVE: 'multipart/alternative', //include both plain and HTML

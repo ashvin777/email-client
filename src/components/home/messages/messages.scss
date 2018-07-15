@@ -2,17 +2,19 @@
 
 .messages-container{
   padding: 20px;
-  padding-top: 30px;
+  padding-top: 20px;
   padding-bottom: 0;
   padding-right: 0;
   position: relative;
-  width: 750px;
+  min-width: 500px;
+  flex: 1;
 
   header{
     font-size: $largest-font;
     width: 100%;
     border-bottom: 2px solid $blue-lightest;
     -webkit-app-region: drag;
+    min-height: 83px;
 
     .top{
       .search{
@@ -27,7 +29,7 @@
     }
 
     .bottom{
-      padding-top: 10px;
+      padding-top: 0px;
     }
   }
 
@@ -191,7 +193,7 @@
             background: white;
           }
 
-          .subject, .from, .timestamp{
+          .subject, .from, .timestamp, .snippet{
             color: white;
           }
         }

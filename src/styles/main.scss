@@ -28,10 +28,11 @@ ul{
 
 ::-webkit-scrollbar {
   width: 2px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: $blue-lightest;
+  background: white;
 }
 
 ::-webkit-scrollbar-thumb {

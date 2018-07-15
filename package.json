@@ -13,8 +13,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "electron-google-oauth": "^2.0.0",
+    "gmail-api-parse-message": "^2.0.0",
     "google-auth-library": "^1.6.1",
     "lokijs": "^1.5.5",
+    "mailparser": "^2.2.0",
     "nedb": "^1.8.0",
     "node-sass": "^4.9.2",
     "request": "^2.87.0",

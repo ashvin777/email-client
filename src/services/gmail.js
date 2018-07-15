@@ -3,7 +3,7 @@ const { ipcRenderer } = window.require('electron');
 const EVENTS = {
   FETCH_THREADS: 'fetch-threads',
   GET_THREADS: 'get-threads',
-  THREAD: 'thread',
+  GET_THREAD_DETAILS: 'get-thread-details',
   FETCH_PROFILE: 'fetch-profile',
   GET_PROFILE: 'get-profile',
   IS_TOKEN_LOADED: 'is-token-loaded',
@@ -70,6 +70,19 @@ class Gmail {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.GET_THREADS, data);
       ipcRenderer.once(EVENTS.GET_THREADS, (event, payload) => {
+        if (payload.error) {
+          reject('Failed to load thread');
+          return;
+        }
+        resolve(payload);
+      });
+    });
+  }
+
+  getThreadDetails(data) {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send(EVENTS.GET_THREAD_DETAILS, data);
+      ipcRenderer.once(EVENTS.GET_THREAD_DETAILS, (event, payload) => {
         if (payload.error) {
           reject('Failed to load thread');
           return;

@@ -42,6 +42,7 @@ export default {
       console.log(label, category);
       Gmail.getThreads({ label, category }).then(res => {
         this.threads = res.threads;
+        console.log(this.threads);
       });
     },
 
@@ -56,10 +57,10 @@ export default {
       }
     },
 
-    isMimeTypeRelated(thread) {
-      if (thread.messages) {
-        return thread.messages.some(message => message.payload.mimeType === MESSAGE_MIMES.MULTIPART.RELATED);
-      }
+    isAttachment(thread) {
+      return thread.messages.some(message => {
+        return message.attachments && message.attachments.length > 0;
+      });
     },
 
     getCategory(thread) {

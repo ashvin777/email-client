@@ -16,6 +16,7 @@ const GOOGLE_AUTH_URL =
 const EVENTS = {
   FETCH_THREADS: 'fetch-threads',
   GET_THREADS: 'get-threads',
+  GET_THREAD_DETAILS: 'get-thread-details',
   FETCH_PROFILE: 'fetch-profile',
   GET_PROFILE: 'get-profile',
   LOGIN: 'login',

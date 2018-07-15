@@ -2,6 +2,7 @@ const electron = require('electron');
 const fs = require('./fs');
 const login = require('./login');
 const request = require('./request');
+const parseMessage = require('gmail-api-parse-message');
 const BrowserWindow = electron.BrowserWindow;
 
 const {
@@ -94,20 +95,17 @@ class GmailSync {
         fs.mkdir(`${CACHE.THREADS}/${thread.id}`);
         request.fetchThreadDetails(thread.id).then(threadDetails => {
           threadDetails.messages.forEach(message => {
-            fs.write(`${CACHE.THREADS}/${thread.id}/${message.id}.json`, message);
+            fs.write(`${CACHE.THREADS}/${thread.id}/${message.id}.json`, parseMessage(message));
           });
 
           //cleanup
           threadDetails.messages = threadDetails.messages.map(message => {
-            message.headers = {};
-            message.payload.headers.forEach(header => {
-              message.headers[header.name] = header.value;
-            });
-            delete message.payload.headers;
-            delete message.payload.body;
-            delete message.payload.parts;
+            message = parseMessage(message);
+            delete message.textPlain;
+            delete message.textHtml;
             return message;
           });
+
           fs.write(`${CACHE.THREADS}/${thread.id}/thread.json`, threadDetails);
 
         });

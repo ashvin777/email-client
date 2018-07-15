@@ -4,7 +4,10 @@
   overflow: auto;
   margin-right: 10px;
   padding: 0 20px;
+  margin-left: 20px;
   user-select: auto;
+  min-width: 50%;
+  // background: $gray-lightest;
 
   header{
     font-size: $largest-font;
@@ -14,10 +17,17 @@
   }
 
   .body{
+    margin: 0px;
+    margin-top: 30px;
+
     .message{
-      margin: 20px 0;
+      margin: 0;
       padding: 20px;
-      box-shadow: 0 0 10px $gray-lighter;
+      box-shadow: 0 1px 5px $gray-lighter;
+      overflow: auto;
+      width: calc( 100% - 60px );
+      word-wrap: break-word;
+      background: white;
     }
   }
 }

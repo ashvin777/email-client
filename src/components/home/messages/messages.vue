@@ -39,23 +39,23 @@
           @click="select(thread)">
 
           <div class="icons">
-            <i class="icon-paperclip" v-if="isMimeTypeRelated(thread)"></i>
+            <i class="icon-paperclip" v-if="isAttachment(thread)"></i>
             <i class="icon-read" v-if="!isUnread(thread)"></i>
             <i class="icon-unread" v-if="isUnread(thread)"></i>
           </div>
 
           <div class="from">
-            <span>{{thread.messages[0].headers.From | from}} {{thread.messages.length > 1 ? `(${thread.messages.length})` : ''}}</span>
+            <span>{{thread.messages[0].headers.from | from}} {{thread.messages.length > 1 ? `(${thread.messages.length})` : ''}}</span>
           </div>
 
           <div class="subject">
             <!-- <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span> -->
-            <span>{{thread.messages[0].headers.Subject}}</span>
+            <span>{{thread.messages[0].headers.subject}}</span>
             <span class="snippet" v-html="thread.messages[0].snippet"></span>
           </div>
 
           <div class="timestamp">
-            {{thread.messages[thread.messages.length - 1].headers.Date | moment('Do MMMM (h:mm a)')}}
+            {{thread.messages[thread.messages.length - 1].internalDate | moment('Do MMMM (h:mm a)')}}
           </div>
 
         </li>

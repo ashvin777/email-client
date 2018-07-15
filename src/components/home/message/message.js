@@ -1,4 +1,6 @@
 const { ipcRenderer } = window.require('electron');
+import Gmail from '../../../services/gmail';
+import { MESSAGE_MIMES } from '../../../index.constants';
 
 export default {
   props: ['thread'],
@@ -12,26 +14,41 @@ export default {
   watch: {
     thread() {
       if (this.thread) {
-        ipcRenderer.send('thread', this.thread);
-        ipcRenderer.on('thread', (evt, payload) => {
-          this.threadDetails = payload;
-          try {
-            this.messageDOM.innerHTML = this.getBody(payload.messages[0].payload.parts[1].body.data);
-          } catch (e) {
+        this.threadDetails = {};
+        Gmail.getThreadDetails(this.thread.id).then((res) => {
+          this.threadDetails = res;
 
+          if (res.messages) {
+            setTimeout(() => {
+              res.messages.forEach(message => {
+                if (this.isTextHTML(message)) {
+                  let dom = this.attachShadow(message.id);
+                  dom.innerHTML = message.textHtml;
+                }
+              });
+            });
           }
         });
       }
     }
   },
 
-  mounted() {
-    this.messageDOM = this.$refs.message.attachShadow({
-      mode: 'open'
-    });
-  },
-
   methods: {
+
+    isAttachment(message) {
+      return message.attachments && message.attachments.length > 0;
+    },
+
+    isTextHTML(message) {
+      return typeof message.textHtml !== 'undefined';
+    },
+
+    attachShadow(ref) {
+      return this.$refs[ref][0].attachShadow({
+        mode: 'open'
+      });
+    },
+
     getBody(message) {
       return atob(message.replace(/_/g, '/').replace(/-/g, '+'));
     }
