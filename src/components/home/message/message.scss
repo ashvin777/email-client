@@ -6,15 +6,8 @@
   padding: 0 20px;
   margin-left: 20px;
   user-select: auto;
-  min-width: 50%;
-  // background: $gray-lightest;
-
-  header{
-    font-size: $largest-font;
-    width: 100%;
-    border-bottom: 2px solid $blue-lightest;
-    padding-top: 38px;
-  }
+  width: calc( 60% - 150px );
+  background: $gray-lightest;
 
   .body{
     margin: 0px;
@@ -22,12 +15,28 @@
 
     .message{
       margin: 0;
-      padding: 20px;
-      box-shadow: 0 1px 5px $gray-lighter;
-      overflow: auto;
-      width: calc( 100% - 60px );
+      margin-bottom: 20px;
+
+      box-shadow: 0 1px 5px $gray-light;
+      width: 100%;
       word-wrap: break-word;
       background: white;
+
+      header{
+        padding: 10px 20px;
+        border-bottom: 1px solid $gray-lightest;
+
+        .subject{
+          font-size: $large-font;
+          font-weight: bold;
+        }
+      }
+
+      .message-body{
+        padding: 20px;
+        overflow: auto;
+      }
+
     }
   }
 }

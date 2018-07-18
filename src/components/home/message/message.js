@@ -1,13 +1,17 @@
-const { ipcRenderer } = window.require('electron');
 import Gmail from '../../../services/gmail';
-import { MESSAGE_MIMES } from '../../../index.constants';
 
 export default {
   props: ['thread'],
 
   data() {
     return {
-      threadDetails: {}
+      threadDetails: {},
+      style: `
+      <style>
+      :shadow-root, :host {
+        all: initial;
+      }
+      </style>`
     };
   },
 
@@ -23,7 +27,7 @@ export default {
               res.messages.forEach(message => {
                 if (this.isTextHTML(message)) {
                   let dom = this.attachShadow(message.id);
-                  dom.innerHTML = message.textHtml;
+                  dom.innerHTML = message.textHtml + this.style;
                 }
               });
             });
@@ -45,7 +49,7 @@ export default {
 
     attachShadow(ref) {
       return this.$refs[ref][0].attachShadow({
-        mode: 'open'
+        mode: 'closed'
       });
     },
 
