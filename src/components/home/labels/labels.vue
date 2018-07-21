@@ -6,7 +6,7 @@
   <div class="labels-container">
 
     <header>
-      <button class="primary">Compose</button>
+      <button class="primary" @click="compose()">Compose</button>
     </header>
 
     <div class="body">

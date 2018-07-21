@@ -4,6 +4,7 @@ const login = require('./login');
 const request = require('./request');
 const parseMessage = require('gmail-api-parse-message');
 const BrowserWindow = electron.BrowserWindow;
+const MailComposer = require('nodemailer/lib/mail-composer');
 
 const {
   EVENTS,
@@ -23,6 +24,7 @@ class GmailSync {
     ipcMain.on(EVENTS.FETCH_THREADS, this.fetchThreads.bind(this));
 
     ipcMain.on(EVENTS.IS_TOKEN_LOADED, this.isTokenLoaded.bind(this));
+    ipcMain.on(EVENTS.SEND, this.send.bind(this));
 
     //preparations
     fs.mkdir(CACHE.ROOT);
@@ -53,10 +55,14 @@ class GmailSync {
       if (data.access_token) {
         this.mainWindow.webContents.send(EVENTS.IS_TOKEN_LOADED, data);
       } else {
-        this.mainWindow.webContents.send(EVENTS.IS_TOKEN_LOADED, { error: true });
+        this.mainWindow.webContents.send(EVENTS.IS_TOKEN_LOADED, {
+          error: true
+        });
       }
     } catch (e) {
-      this.mainWindow.webContents.send(EVENTS.IS_TOKEN_LOADED, { error: true });
+      this.mainWindow.webContents.send(EVENTS.IS_TOKEN_LOADED, {
+        error: true
+      });
     }
   }
 
@@ -111,6 +117,26 @@ class GmailSync {
         });
 
         this.mainWindow.webContents.send(EVENTS.FETCH_THREADS);
+      });
+    });
+  }
+
+  encode(text) {
+    return Buffer.from(text).toString('base64').replace(/\+/g, '-').replace(/\//g, '_')
+  }
+
+  send(event, payload) {
+
+    var mail = new MailComposer(payload).compile();
+
+    mail.build((err, message) => {
+      console.log(JSON.stringify(payload, message));
+      let msg = Buffer.from(JSON.parse(JSON.stringify(message)).data).toString('utf8');
+      // console.log(msg);
+      request.send(msg).then((response) => {
+        console.log('message is sent', response)
+      }, err => {
+        console.log('error', err, err.errors);
       });
     });
   }

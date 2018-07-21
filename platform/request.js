@@ -12,6 +12,7 @@ const API_PATH = {
   LABELS: `${BASE_URL}/labels`,
   HISTORY: `${BASE_URL}/history`,
   PROFILE: `${BASE_URL}/profile`,
+  SEND: `https://www.googleapis.com/upload/gmail/v1/users/me/messages/send`,
   PROFILE_DETAILS : 'http://picasaweb.google.com/data/entry/api/user/'
 };
 
@@ -71,6 +72,17 @@ class Request {
     return new Promise((resolve, reject) => {
       let options = this.getOptions(`${API_PATH.PROFILE_DETAILS}${emailAddress}?alt=json`);
       delete options.headers;
+      this.request(options, resolve, reject);
+    });
+  }
+
+  send(payload) {
+    return new Promise((resolve, reject) => {
+      let options = this.getOptions(API_PATH.SEND);
+      options.url += '?uploadType=multipart';
+      options.method = 'POST';
+      options.headers['Content-Type'] = 'message/rfc822';
+      options.body = payload;
       this.request(options, resolve, reject);
     });
   }

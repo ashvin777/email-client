@@ -1,4 +1,5 @@
 import { LABELS, LABEL_IDS } from "./labels.const";
+import Windows from '../../../services/windows';
 
 export default {
 
@@ -19,6 +20,10 @@ export default {
     select(label){
       this.selectedLabel = label;
       this.$emit('select', label);
+    },
+
+    compose() {
+      Windows.compose();
     }
   }
 };

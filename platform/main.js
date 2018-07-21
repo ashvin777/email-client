@@ -1,7 +1,8 @@
 const electron = require('electron');
-// const fs = require('fs');
 const Gmail = require('./gmail');
 const API = require('./api');
+const Windows = require('./windows');
+
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 let win, url;
@@ -23,6 +24,7 @@ function createWindow() {
 
   Gmail.init(win);
   API.init(win);
+  Windows.init(win);
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -30,6 +32,17 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  var handleRedirect = (e, url) => {
+    if(url != win.webContents.getURL()) {
+      e.preventDefault()
+      require('electron').shell.openExternal(url)
+    }
+  }
+
+  //external links redirects
+  win.webContents.on('will-navigate', handleRedirect)
+  win.webContents.on('new-window', handleRedirect)
 
 }
 
@@ -45,7 +58,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('will-finish-launching', function () {
-  //
+
 });
 
 app.on('activate', () => {

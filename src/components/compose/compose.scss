@@ -1,0 +1,52 @@
+@import '../../styles/consts.scss';
+
+.page{
+  &.page-compose{
+    display: flex;
+    flex-direction: column;
+
+    header{
+
+      &.title{
+        height: 25px;
+        background: $dark;
+        color: white;
+        text-align: center;
+        -webkit-app-region: drag;
+        line-height: 25px;
+      }
+
+      > div{
+        display: flex;
+        padding: 0px 20px;
+        border-bottom: 1px solid $gray-lightest;
+
+        label{
+          line-height: 40px;
+        }
+
+        input{
+          flex: 1;
+          border: 0;
+
+          &:focus{
+            box-shadow: none;
+          }
+        }
+      }
+    }
+
+    .body{
+      display: inline-block;
+      flex: 1;
+
+      .quillWrapper{
+        height: auto;
+
+        .quill-container{
+          overflow: auto;
+        }
+      }
+    }
+  }
+}

@@ -21,7 +21,8 @@ const EVENTS = {
   GET_PROFILE: 'get-profile',
   LOGIN: 'login',
   TOKEN: 'token',
-  IS_TOKEN_LOADED: 'is-token-loaded'
+  IS_TOKEN_LOADED: 'is-token-loaded',
+  SEND: 'send'
 };
 
 const LABELS = {

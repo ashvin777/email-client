@@ -12,7 +12,7 @@
 
       <div class="message" v-for="(message, index) in threadDetails.messages" :key="index" v-if="isTextHTML(message)">
         <header>
-          <div class="subject">{{message.headers.subject}}</div>
+          <div class="subject"><span class="icon-mail"></span> {{message.headers.subject}}</div>
         </header>
 
         <header>

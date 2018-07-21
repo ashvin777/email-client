@@ -1,7 +1,8 @@
 export const STATES = {
   HOME: '/home',
   LOGIN: '/login',
-  LOADING: '/loading'
+  LOADING: '/loading',
+  COMPOSE: '/compose'
 };
 
 export const EVENTS = {

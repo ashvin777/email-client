@@ -7,7 +7,8 @@ const EVENTS = {
   FETCH_PROFILE: 'fetch-profile',
   GET_PROFILE: 'get-profile',
   IS_TOKEN_LOADED: 'is-token-loaded',
-  LOGIN: 'login'
+  LOGIN: 'login',
+  SEND: 'send'
 };
 
 class Gmail {
@@ -85,6 +86,19 @@ class Gmail {
       ipcRenderer.once(EVENTS.GET_THREAD_DETAILS, (event, payload) => {
         if (payload.error) {
           reject('Failed to load thread');
+          return;
+        }
+        resolve(payload);
+      });
+    });
+  }
+
+  send(body) {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send(EVENTS.SEND, body);
+      ipcRenderer.once(EVENTS.SEND, (event, payload) => {
+        if (payload.error) {
+          reject('Failed to send email');
           return;
         }
         resolve(payload);

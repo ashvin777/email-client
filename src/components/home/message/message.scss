@@ -29,6 +29,14 @@
         .subject{
           font-size: $large-font;
           font-weight: bold;
+
+          .icon-mail{
+            vertical-align: top;
+            margin-top: 4px;
+            padding-right: 10px;
+            color: $blue;
+            display: inline-block;
+          }
         }
       }
 
