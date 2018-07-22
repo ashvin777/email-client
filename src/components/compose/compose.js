@@ -21,9 +21,9 @@ export default {
         text: this.body,
         html: 'Embedded image: <img src="cid:unique@kreata.ee"/>',
         attachments: [{
-            filename: 'profile.jpeg',
-            path: '/Users/ashvin/Desktop/profile.jpeg',
-            cid: 'unique@kreata.ee' //same cid value as in the html img src
+          filename: 'profile.jpeg',
+          path: '/Users/ashvin/Desktop/profile.jpeg',
+          cid: 'unique@kreata.ee' //same cid value as in the html img src
         }]
       });
     }

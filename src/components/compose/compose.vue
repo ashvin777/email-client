@@ -3,11 +3,6 @@
 
 <template>
   <div class="page page-compose">
-
-    <header class="title">
-      New message
-    </header>
-
     <header>
       <div>
         <label>To</label>

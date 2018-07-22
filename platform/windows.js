@@ -26,8 +26,7 @@ class Windows {
   compose() {
     let win = new BrowserWindow({
       width: 950,
-      height: 700,
-      titleBarStyle: 'hidden'
+      height: 700
     });
 
     win.loadURL(url);

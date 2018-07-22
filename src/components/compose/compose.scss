@@ -7,15 +7,6 @@
 
     header{
 
-      &.title{
-        height: 25px;
-        background: $dark;
-        color: white;
-        text-align: center;
-        -webkit-app-region: drag;
-        line-height: 25px;
-      }
-
       > div{
         display: flex;
         padding: 0px 20px;
