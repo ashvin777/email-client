@@ -3,7 +3,7 @@
 <script src="./message.js"></script>
 
 <template>
-  <div class="message-container" v-if="threadDetails && threadDetails.id">
+  <div class="message-container" v-if="threadDetails">
     <!-- <header v-if="threadDetails.messages">
       {{threadDetails.messages[0].headers.subject}}
     </header> -->
