@@ -28,7 +28,11 @@ export default {
       profile.emailAddress = profile.data.emailAddress;
 
       this.profile = profile;
-    })
+    });
+
+    // let myNotification = new Notification('You have new email', {
+    //   body: 'Lorem Ipsum Dolor Sit Amet'
+    // })
   },
 
   methods: {
