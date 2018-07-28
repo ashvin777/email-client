@@ -1,5 +1,6 @@
 const request = require('request');
 const fs = require('./fs');
+
 const {
   CACHE
 } = require('./consts');
@@ -12,9 +13,13 @@ const API_PATH = {
   LABELS: `${BASE_URL}/labels`,
   HISTORY: `${BASE_URL}/history`,
   PROFILE: `${BASE_URL}/profile`,
+  LABELS: `${BASE_URL}/labels`,
+  BATCH: `https://www.googleapis.com/batch/gmail/v1`,
   SEND: `https://www.googleapis.com/upload/gmail/v1/users/me/messages/send`,
-  PROFILE_DETAILS : 'http://picasaweb.google.com/data/entry/api/user/'
+  PROFILE_DETAILS: 'http://picasaweb.google.com/data/entry/api/user/'
 };
+
+const BOUNDARY = 'boundary';
 
 class Request {
 
@@ -24,7 +29,7 @@ class Request {
       method: 'GET',
       url: url,
       qs: qs || {
-        maxResults: 20
+        maxResults: 100
       },
       headers: {
         Authorization: `Bearer ${token.access_token}`
@@ -45,9 +50,9 @@ class Request {
   fetchThreads(query) {
     return new Promise((resolve, reject) => {
       let options = this.getOptions(API_PATH.THREADS);
-      if (query.length > 1) {
+      if (query && query.length > 1) {
         options.qs.q = `in:${query[0]} category:${query[1]}`;
-      } else {
+      } else if (query && query.length === 1) {
         options.qs.q = `in:${query[0]}`;
       }
       this.request(options, resolve, reject);
@@ -87,10 +92,61 @@ class Request {
     });
   }
 
-  request(options, resolve, reject) {
+  fetchLabels() {
+    return new Promise((resolve, reject) => {
+      let options = this.getOptions(API_PATH.LABELS);
+      this.request(options, resolve, reject);
+    });
+  }
+
+  fetchBatch(data, api) {
+    return new Promise((resolve, reject) => {
+
+      let options = this.getOptions(API_PATH.BATCH);
+      options.method = 'POST';
+      options.headers['Content-Type'] = `multipart/mixed; boundary=${BOUNDARY}`;
+      options.body = '';
+      data.forEach(item => {
+        options.body += `--${BOUNDARY}\n`+
+          `Content-Type: application/http\n\n`+
+          `GET gmail/v1/users/me/${api}/${item.id}\n`
+      });
+
+      options.body += `--${BOUNDARY}--`;
+      console.log(options.body);
+      this.request(options, resolve, reject, true);
+    });
+  }
+
+  parseBatchResponse(response) {
+    // Not the same delimiter in the response as we specify ourselves in the request,
+    // so we have to extract it.
+    var delimiter = response.substr(0, response.indexOf('\r\n'));
+    var parts = response.split(delimiter);
+    // The first part will always be an empty string. Just remove it.
+    parts.shift();
+    // The last part will be the "--". Just remove it.
+    parts.pop();
+
+    var result = [];
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      var p = part.substring(part.indexOf("{"), part.lastIndexOf("}") + 1);
+      result.push(JSON.parse(p));
+    }
+    return result;
+  }
+
+  request(options, resolve, reject, batchResponse) {
     request(options, (error, res, body) => {
       if (error) {
         reject(error);
+        return;
+      }
+
+      console.log('data received');
+      if (batchResponse) {
+        resolve(this.parseBatchResponse(body));
         return;
       }
 
@@ -101,7 +157,6 @@ class Request {
       }
     });
   }
-
 }
 
 module.exports = new Request();

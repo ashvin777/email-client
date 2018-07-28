@@ -1,6 +1,7 @@
 const electron = require('electron');
 const Gmail = require('./gmail');
 const API = require('./api');
+const Sync = require('./sync');
 const Windows = require('./windows');
 
 const app = electron.app;
@@ -25,6 +26,7 @@ function createWindow() {
   Gmail.init(win);
   API.init(win);
   Windows.init(win);
+  Sync.init(win);
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows

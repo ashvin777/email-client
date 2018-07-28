@@ -30,18 +30,18 @@ class GmailSync {
     fs.mkdir(CACHE.ROOT);
     fs.mkdir(CACHE.THREADS);
 
-    Object.keys(LABELS).forEach(index => {
-      let label = LABELS[index];
-      if (label === LABELS.INBOX) {
-        Object.keys(CATEGORIES).forEach(key => {
-          let category = CATEGORIES[key];
-          fs.mkdir(`${CACHE.ROOT}${label}`);
-          fs.mkdir(`${CACHE.ROOT}${label}/${category}`);
-        });
-      } else {
-        fs.mkdir(`${CACHE.ROOT}${label}`);
-      }
-    });
+    // Object.keys(LABELS).forEach(index => {
+    //   let label = LABELS[index];
+    //   if (label === LABELS.INBOX) {
+    //     Object.keys(CATEGORIES).forEach(key => {
+    //       let category = CATEGORIES[key];
+    //       fs.mkdir(`${CACHE.ROOT}${label}`);
+    //       fs.mkdir(`${CACHE.ROOT}${label}/${category}`);
+    //     });
+    //   } else {
+    //     fs.mkdir(`${CACHE.ROOT}${label}`);
+    //   }
+    // });
   }
 
   init(window) {

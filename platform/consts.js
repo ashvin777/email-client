@@ -22,7 +22,8 @@ const EVENTS = {
   LOGIN: 'login',
   TOKEN: 'token',
   IS_TOKEN_LOADED: 'is-token-loaded',
-  SEND: 'send'
+  SEND: 'send',
+  SYNC: 'sync'
 };
 
 const LABELS = {
@@ -46,6 +47,7 @@ const CATEGORIES = {
 
 const CACHE = {
   ROOT: './.cache/',
+  LABELS: './.cache/labels/',
   THREADS: './.cache/threads/',
   METADATA: './.cache/metadata/',
   INBOX: './.cache/inbox/',

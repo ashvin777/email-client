@@ -8,7 +8,8 @@ const EVENTS = {
   GET_PROFILE: 'get-profile',
   IS_TOKEN_LOADED: 'is-token-loaded',
   LOGIN: 'login',
-  SEND: 'send'
+  SEND: 'send',
+  SYNC: 'sync'
 };
 
 class Gmail {
@@ -17,6 +18,19 @@ class Gmail {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LOGIN);
       ipcRenderer.once(EVENTS.LOGIN, () => {
+        resolve();
+      });
+    });
+  }
+
+  startSync() {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send(EVENTS.SYNC);
+      ipcRenderer.once(EVENTS.SYNC, (event, payload) => {
+        if (payload && payload.error) {
+          reject('Failed to load profile');
+          return;
+        }
         resolve();
       });
     });
