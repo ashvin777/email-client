@@ -8,13 +8,14 @@
   position: relative;
   min-width: 500px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   header{
     font-size: $largest-font;
     width: 100%;
-    border-bottom: 2px solid $blue-lightest;
     -webkit-app-region: drag;
-    min-height: 83px;
 
     .top{
       .search{
@@ -27,15 +28,12 @@
         }
       }
     }
-
-    .bottom{
-      padding-top: 0px;
-    }
   }
 
   .body{
     margin-top: 20px;
-    height: calc( 100% - 113px);
+    flex: 1;
+    max-height: 100%;
 
     ul{
       height: 100%;

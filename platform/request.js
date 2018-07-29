@@ -47,14 +47,10 @@ class Request {
   }
 
 
-  fetchThreads(query) {
+  fetchThreads(labelId) {
     return new Promise((resolve, reject) => {
       let options = this.getOptions(API_PATH.THREADS);
-      if (query && query.length > 1) {
-        options.qs.q = `in:${query[0]} category:${query[1]}`;
-      } else if (query && query.length === 1) {
-        options.qs.q = `in:${query[0]}`;
-      }
+      options.qs.q = `in:${labelId}`;
       this.request(options, resolve, reject);
     });
   }
@@ -113,7 +109,6 @@ class Request {
       });
 
       options.body += `--${BOUNDARY}--`;
-      console.log(options.body);
       this.request(options, resolve, reject, true);
     });
   }
@@ -144,7 +139,6 @@ class Request {
         return;
       }
 
-      console.log('data received');
       if (batchResponse) {
         resolve(this.parseBatchResponse(body));
         return;

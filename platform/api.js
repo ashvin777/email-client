@@ -25,16 +25,11 @@ class API {
     this.mainWindow.webContents.send(EVENTS.GET_PROFILE, data);
   }
 
-  getThreads(event, { label, category }) {
+  getThreads(event, labelId) {
     try {
-      let url = '';
-      if (label.toLowerCase() === LABELS.INBOX) {
-        url = `${CACHE.ROOT}${label}/${category}/threads.json`;
-      } else {
-        url = `${CACHE.ROOT}${label}/threads.json`;
-      }
-
+      let url = `${CACHE.LABELS}${labelId}/threads.json`;
       let data = fs.read(url);
+
       data.threads = data.threads.map(thread => {
         try {
           let data = fs.read(`${CACHE.THREADS}/${thread.id}/thread.json`);
@@ -44,9 +39,9 @@ class API {
         }
       });
 
-      this.mainWindow.webContents.send(EVENTS.GET_THREADS, data);
+      this.mainWindow.webContents.send(EVENTS.GET_THREADS + labelId, data);
     } catch (e) {
-      this.mainWindow.webContents.send(EVENTS.GET_THREADS, { });
+      this.mainWindow.webContents.send(EVENTS.GET_THREADS + labelId, { error: 'some error occurred'});
     }
   }
 

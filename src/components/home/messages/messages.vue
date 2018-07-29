@@ -12,17 +12,6 @@
           <input type="search" placeholder="Search messages..."/>
         </div>
       </div>
-      <div class="bottom">
-        <ul class="tabs" v-if="label.id && label.id.toLowerCase() === labels.INBOX">
-          <li class="tab"
-            v-for="(category, index) in categories"
-            :class="{ active: selectedCategory.id === category.id }"
-            @click="selectCategory(category)"
-            :key="index">
-            {{category.name}}
-          </li>
-        </ul>
-      </div>
     </header>
 
     <div class="body">
@@ -49,7 +38,7 @@
           </div>
 
           <div class="subject">
-            <!-- <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span> -->
+            <span class="category" :class="getCategory(thread)" v-if="getCategory(thread)">{{getCategory(thread)}}</span>
             <span>{{thread.messages[0].headers.subject}}</span>
             <span class="snippet" v-html="thread.messages[0].snippet"></span>
           </div>

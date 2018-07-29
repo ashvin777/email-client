@@ -24,24 +24,14 @@ class GmailSync {
     ipcMain.on(EVENTS.FETCH_THREADS, this.fetchThreads.bind(this));
 
     ipcMain.on(EVENTS.IS_TOKEN_LOADED, this.isTokenLoaded.bind(this));
+    ipcMain.on(EVENTS.FETCH_LABELS, this.fetchLabels.bind(this));
+    ipcMain.on(EVENTS.SYNC, this.sync.bind(this));
     ipcMain.on(EVENTS.SEND, this.send.bind(this));
 
-    //preparations
+    //create require cache folder on start
     fs.mkdir(CACHE.ROOT);
     fs.mkdir(CACHE.THREADS);
-
-    // Object.keys(LABELS).forEach(index => {
-    //   let label = LABELS[index];
-    //   if (label === LABELS.INBOX) {
-    //     Object.keys(CATEGORIES).forEach(key => {
-    //       let category = CATEGORIES[key];
-    //       fs.mkdir(`${CACHE.ROOT}${label}`);
-    //       fs.mkdir(`${CACHE.ROOT}${label}/${category}`);
-    //     });
-    //   } else {
-    //     fs.mkdir(`${CACHE.ROOT}${label}`);
-    //   }
-    // });
+    fs.mkdir(CACHE.LABELS);
   }
 
   init(window) {
@@ -66,63 +56,60 @@ class GmailSync {
     }
   }
 
-  fetchProfile(event, payload) {
-    request.fetchProfile().then(res => {
-      request.fetchProfileDetails(res.emailAddress).then(profile => {
-        profile.data = res;
-        fs.write(CACHE.PROFILE, profile);
-        this.mainWindow.webContents.send(EVENTS.FETCH_PROFILE, profile);
-      });
-    });
+  async sync() {
+    Object.keys(LABELS).forEach(key => {
+      let label = LABELS[key];
+    })
   }
 
-  fetchThreads(event, payload) {
-    let options = [payload.label];
-    if (payload.category) {
-      options.push(payload.category);
+  async fetchLabels() {
+    let { labels } = await request.fetchLabels();
+    labels = await request.fetchBatch(labels, 'labels');
+    labels.forEach(label => {
+      fs.mkdir(`${CACHE.LABELS}`);
+      fs.mkdir(`${CACHE.LABELS}${label.id}`);
+      fs.write(`${CACHE.LABELS}${label.id}/label.json`, label);
+    });
+    this.mainWindow.webContents.send(EVENTS.FETCH_LABELS, labels);
+  }
+
+  async fetchProfile(event, payload) {
+    let profile = await request.fetchProfile();
+    profile.data = await request.fetchProfileDetails(profile.emailAddress);
+    fs.write(CACHE.PROFILE, profile);
+    this.mainWindow.webContents.send(EVENTS.FETCH_PROFILE, profile);
+  }
+
+  async fetchThreads(event, labelId) {
+    let res = await request.fetchThreads(labelId);
+
+    if (!res || !res.threads) {
+      return;
     }
 
-    request.fetchThreads(options).then(res => {
+    fs.mkdir(`${CACHE.LABELS}${labelId}/`);
+    fs.write(`${CACHE.LABELS}${labelId}/threads.json`, res);
 
-      if (!res.threads) {
-        return;
-      }
-
-      if (payload.category) {
-        fs.mkdir(`${CACHE.ROOT}${payload.label}/${payload.category}/`);
-        fs.write(`${CACHE.ROOT}${payload.label}/${payload.category}/threads.json`, res);
-      } else {
-        fs.mkdir(`${CACHE.ROOT}${payload.label}/`);
-        fs.write(`${CACHE.ROOT}${payload.label}/threads.json`, res);
-      }
-
-      res.threads.forEach(thread => {
-
-        fs.mkdir(`${CACHE.THREADS}/${thread.id}`);
-        request.fetchThreadDetails(thread.id).then(threadDetails => {
-          threadDetails.messages.forEach(message => {
-            fs.write(`${CACHE.THREADS}/${thread.id}/${message.id}.json`, parseMessage(message));
-          });
-
-          //cleanup
-          threadDetails.messages = threadDetails.messages.map(message => {
-            message = parseMessage(message);
-            delete message.textPlain;
-            delete message.textHtml;
-            return message;
-          });
-
-          fs.write(`${CACHE.THREADS}/${thread.id}/thread.json`, threadDetails);
-
-        });
-
-        this.mainWindow.webContents.send(EVENTS.FETCH_THREADS);
-      });
-    });
+    let threads = await request.fetchBatch(res.threads, 'threads');
+    if (threads) {
+      threads.forEach(this._storeThread);
+      this.mainWindow.webContents.send(EVENTS.FETCH_THREADS + labelId);
+    }
   }
 
-  encode(text) {
-    return Buffer.from(text).toString('base64').replace(/\+/g, '-').replace(/\//g, '_')
+  _storeThread(thread) {
+    fs.mkdir(`${CACHE.THREADS}/${thread.id}`);
+
+    if (thread && thread.messages) {
+      thread.messages = thread.messages.map(message => {
+        message = parseMessage(message);
+        fs.write(`${CACHE.THREADS}/${thread.id}/${message.id}.json`, message);
+        delete message.textPlain;
+        delete message.textHtml;
+        return message;
+      });
+      fs.write(`${CACHE.THREADS}/${thread.id}/thread.json`, thread);
+    }
   }
 
   send(event, payload) {
@@ -140,6 +127,7 @@ class GmailSync {
       });
     });
   }
+
 }
 
 

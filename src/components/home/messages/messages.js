@@ -14,9 +14,7 @@ export default {
     return {
       threads: [],
       selected: {},
-      labels : LABELS,
-      selectedCategory: CATEGORIES[0],
-      categories: CATEGORIES
+      labels : LABELS
     };
   },
 
@@ -28,21 +26,15 @@ export default {
 
   watch: {
     label(label) {
-      if (this.label.id.toLowerCase() === this.labels.INBOX) {
-        this.getThreads(this.label.id, this.selectedCategory.id);
-      } else {
-        this.getThreads(this.label.id);
-      }
+      this.getThreads(label.id);
     }
   },
 
   methods: {
 
-    getThreads(label, category) {
-      console.log(label, category);
-      Gmail.getThreads({ label, category }).then(res => {
+    getThreads(labelId) {
+      Gmail.getThreads(labelId).then(res => {
         this.threads = res.threads;
-        console.log(this.threads);
       });
     },
 
@@ -73,11 +65,6 @@ export default {
           return category;
         }
       }
-    },
-
-    selectCategory(category) {
-      this.selectedCategory = category;
-      this.getThreads(this.label.id, category.id);
     }
 
   }

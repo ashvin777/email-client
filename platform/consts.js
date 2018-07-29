@@ -19,6 +19,7 @@ const EVENTS = {
   GET_THREAD_DETAILS: 'get-thread-details',
   FETCH_PROFILE: 'fetch-profile',
   GET_PROFILE: 'get-profile',
+  FETCH_LABELS: 'FETCH_LABELS',
   LOGIN: 'login',
   TOKEN: 'token',
   IS_TOKEN_LOADED: 'is-token-loaded',

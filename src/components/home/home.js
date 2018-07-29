@@ -30,6 +30,11 @@ export default {
       this.profile = profile;
     });
 
+    Gmail.startSync().then(res => {
+      console.log('sync completed with res', res);
+      console.log(res);
+    });
+
     // let myNotification = new Notification('You have new email', {
     //   body: 'Lorem Ipsum Dolor Sit Amet'
     // })
